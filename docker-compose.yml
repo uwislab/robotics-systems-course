@@ -1,0 +1,8 @@
+services:
+  web:
+    build:
+      context: .
+      network: host      # 允许 pip install 访问互联网，绕过 coolify 网络限制
+    ports:
+      - "80:80"
+    restart: unless-stopped
