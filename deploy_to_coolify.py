@@ -150,13 +150,17 @@ if app:
     APP_UUID = app["uuid"]
     print(f"✅ 已有应用: {app.get('name')}  uuid={APP_UUID}")
 
-    step("Step 6: 强制重建并部署（force=true）")
-    # force=true 强制忽略 Git SHA 缓存，重新执行完整构建
-    resp = api("GET", f"/deploy?uuid={APP_UUID}&force=true")
-    if not resp.ok:
-        resp = api("POST", f"/applications/{APP_UUID}/start?force=true")
+    step("Step 6: 强制重建并部署（force_rebuild=true）")
+    # POST /start with force_rebuild=true 让 Coolify 忽略 SHA 缓存重新构建镜像
+    resp = api("POST", f"/applications/{APP_UUID}/start",
+               json={"force_rebuild": True})
     data = resp.json()
-    print(f"✅ 部署已触发: {data.get('message', data)}")
+    print(f"  API 响应: {data}")
+    if resp.ok or "queued" in str(data).lower() or "deployment" in str(data).lower():
+        print(f"✅ 强制重建已触发")
+    else:
+        print(f"❌ 触发失败 HTTP {resp.status_code}: {resp.text}")
+        sys.exit(1)
 
     print(f"\n🌐 站点地址: {DOMAIN}")
     print("⏳ 请等待约 1~2 分钟后访问查看课程内容")
