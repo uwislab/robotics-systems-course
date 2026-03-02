@@ -1,0 +1,9 @@
+site_name: 机器人系统课程
+site_url: http://robotic.uwis.cn
+nav:
+  - 首页: index.md
+  - 课程介绍: intro.md
+  - 教学大纲: syllabus.md
+  - 参考资料: resources.md
+theme:
+  name: material

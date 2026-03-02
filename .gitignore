@@ -1,0 +1,38 @@
+# MkDocs 构建输出
+site/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 环境变量 / 密钥
+.env
+.env.*
+*.key
+secrets.yml
+
+# 日志
+*.log
