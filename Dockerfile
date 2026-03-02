@@ -1,7 +1,7 @@
 # ── Stage 1: 构建 MkDocs ──────────────────────────────────────────────────────
 FROM python:3.12-alpine AS builder
 WORKDIR /build
-RUN pip install --no-cache-dir mkdocs mkdocs-material
+RUN pip install --no-cache-dir mkdocs mkdocs-material plantuml-markdown
 COPY . .
 RUN mkdocs build
 
