@@ -32,9 +32,6 @@ GIT_REPO_AUTH = f"https://{GITHUB_TOKEN}@github.com/uwislab/robotics-systems-cou
 GIT_BRANCH    = "main"
 DOMAIN        = "http://robotic.uwis.cn"
 ENVIRONMENT   = "production"
-# install_command 在 Coolify 容器内执行（构建 MkDocs → 生成 site/）
-INSTALL_CMD   = "pip install mkdocs mkdocs-material && mkdocs build"
-PUBLISH_DIR   = "site"
 LOCAL_DIR     = os.path.dirname(os.path.abspath(__file__))  # 脚本所在目录
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -148,14 +145,13 @@ if app:
     APP_UUID = app["uuid"]
     print(f"✅ 已有应用: {app.get('name')}  uuid={APP_UUID}")
 
-    # 确保 Coolify 应用配置正确（build_pack=static，install_command 含 mkdocs build）
+    # 确保使用 dockerfile buildpack（容器内构建 MkDocs）
     patch = api("PATCH", f"/applications/{APP_UUID}", json={
-        "build_pack":      "static",
-        "install_command": INSTALL_CMD,
-        "publish_directory": PUBLISH_DIR,
+        "build_pack":      "dockerfile",
+        "install_command": "",
     })
     if patch.ok:
-        print(f"✅ 应用配置已更新（install_command / publish_directory）")
+        print(f"✅ 应用配置已更新（build_pack=dockerfile）")
 
     step("Step 6: 强制重建并部署（force_rebuild=true）")
     # POST /start with force_rebuild=true 让 Coolify 忽略 SHA 缓存重新构建镜像
@@ -180,14 +176,11 @@ else:
         "environment_name":       ENVIRONMENT,
         "git_repository":         GIT_REPO,
         "git_branch":             GIT_BRANCH,
-        "build_pack":             "static",
+        "build_pack":             "dockerfile",
         "name":                   APP_NAME,
         "domains":                DOMAIN,
-        "is_static":              True,
         "is_auto_deploy_enabled": True,
         "instant_deploy":         True,
-        "install_command":        INSTALL_CMD,
-        "publish_directory":      PUBLISH_DIR,
         "ports_exposes":          "80",
     }
     resp = api("POST", "/applications/public", json=payload)
