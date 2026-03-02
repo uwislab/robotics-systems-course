@@ -42,6 +42,70 @@ To begin exploring the course materials, navigate through the sections provided 
 
 ---
 
+## Development & Deployment
+
+### Prerequisites
+
+Create a `.env` file in the project root (excluded from git) with the following keys:
+
+```
+COOLIFY_API_KEY=<your-coolify-api-key>
+GITHUB_TOKEN=<your-github-personal-access-token>
+```
+
+Install local dependencies:
+
+```bash
+pip install mkdocs mkdocs-material plantuml-markdown jieba
+```
+
+### Local Preview
+
+Start a local development server with live reload:
+
+```bash
+./preview.sh
+```
+
+The site will be available at **http://127.0.0.1:8000**.  
+Any changes to files under `docs/` are reflected in the browser immediately.
+
+### Deploy to Server
+
+Once satisfied with local testing, deploy to the production server (Coolify):
+
+```bash
+python3 deploy_to_coolify.py
+```
+
+This script will:
+1. Verify that required source files exist
+2. Commit and push changes to GitHub
+3. Locate the Coolify application
+4. Trigger a forced rebuild and redeployment
+
+The production site is served at **http://robotic.uwis.cn**.
+
+### Project Structure
+
+```
+├── docs/                  # Markdown source files
+│   ├── index.md           # Home page
+│   ├── intro.md           # Course introduction
+│   ├── syllabus.md        # Syllabus
+│   └── resources.md       # References & resources
+├── mkdocs.yml             # MkDocs configuration
+├── Dockerfile             # Multi-stage build (MkDocs → nginx)
+├── docker-compose.yaml    # Coolify deployment configuration
+├── nginx.conf             # nginx serving configuration
+├── preview.sh             # Local preview script
+├── deploy_to_coolify.py   # One-command deployment script
+├── .env                   # Secrets (not committed to git)
+└── .gitignore
+```
+
+---
+
 ## Contribution and Feedback
 
 We welcome contributions from the community to improve the course content and platform features. Please refer to the contribution guidelines on the website. For feedback or support, contact the course coordinator.

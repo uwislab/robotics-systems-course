@@ -42,6 +42,70 @@
 
 ---
 
+## 开发与部署
+
+### 前置准备
+
+在项目根目录创建 `.env` 文件（已加入 .gitignore，不会提交到 git）：
+
+```
+COOLIFY_API_KEY=<你的 Coolify API Key>
+GITHUB_TOKEN=<你的 GitHub 个人访问令牌>
+```
+
+安装本地依赖：
+
+```bash
+pip install mkdocs mkdocs-material plantuml-markdown jieba
+```
+
+### 本地预览
+
+启动支持热重载的本地开发服务器：
+
+```bash
+./preview.sh
+```
+
+浏览器访问 **http://127.0.0.1:8000** 即可预览。  
+修改 `docs/` 目录下的任意文件后，浏览器会自动刷新。
+
+### 部署到服务器
+
+本地测试满意后，执行以下命令部署到线上服务器（Coolify）：
+
+```bash
+python3 deploy_to_coolify.py
+```
+
+该脚本会自动完成以下步骤：
+1. 检查必要的源文件是否存在
+2. 提交并推送变更到 GitHub
+3. 定位 Coolify 应用
+4. 触发强制重建与重新部署
+
+线上站点地址：**http://robotic.uwis.cn**
+
+### 项目结构
+
+```
+├── docs/                  # Markdown 源文件
+│   ├── index.md           # 首页
+│   ├── intro.md           # 课程介绍
+│   ├── syllabus.md        # 教学大纲
+│   └── resources.md       # 参考资料
+├── mkdocs.yml             # MkDocs 配置
+├── Dockerfile             # 多阶段构建（MkDocs → nginx）
+├── docker-compose.yaml    # Coolify 部署配置
+├── nginx.conf             # nginx 服务配置
+├── preview.sh             # 本地预览脚本
+├── deploy_to_coolify.py   # 一键部署脚本
+├── .env                   # 密钥文件（不提交到 git）
+└── .gitignore
+```
+
+---
+
 ## 贡献与反馈
 
 我们欢迎社区贡献以改进课程内容和平台功能。请参阅网站上的贡献指南。如需反馈或支持，请联系课程负责人。
