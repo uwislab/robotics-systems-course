@@ -2,7 +2,7 @@
 
 ## 卢军 教授
 
-**电子邮件：** [jlu@cuit.edu.cn](mailto:jlu@cuit.edu.cn)
+**电子邮件：**
 
 ---
 
