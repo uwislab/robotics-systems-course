@@ -9,6 +9,8 @@ nav:
   - 参考资料: resources.md
 theme:
   name: material
+  features:
+    - navigation.expand
 
 plugins:
   - search:
