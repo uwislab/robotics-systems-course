@@ -13,6 +13,11 @@ theme:
   name: material
   features:
     - navigation.expand
+  font:
+    code: Fira Code
+
+extra_css:
+  - assets/stylesheets/monospace-ascii.css
 
 plugins:
   - search:
