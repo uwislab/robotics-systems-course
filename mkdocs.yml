@@ -1,5 +1,5 @@
 site_name: 《机器人系统》课程
-site_url: http://robotic.uwis.cn
+site_url: https://robotic.uwis.cn
 copyright: 成都信息工程大学 软件工程学院
 nav:
   - 首页: index.md
