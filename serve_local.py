@@ -2,7 +2,7 @@
 """
 本地快速预览脚本
 用法：python3 serve_local.py
-访问：http://127.0.0.1:8000
+访问：http://127.0.0.1:8008
 文件变更后自动刷新，Ctrl+C 停止。
 """
 
@@ -36,13 +36,13 @@ def main():
     print("=" * 50)
     print("  本地预览服务器")
     print("=" * 50)
-    print("🌐 地址: http://127.0.0.1:8000")
+    print("🌐 地址: http://127.0.0.1:8008")
     print("🔄 文件保存后自动刷新")
     print("⛔ Ctrl+C 停止\n")
 
     try:
         subprocess.run(
-            ["mkdocs", "serve", "--open", "--watch-theme"],
+            ["mkdocs", "serve", "-a", "127.0.0.1:8008", "--open", "--watch-theme"],
             check=True,
         )
     except KeyboardInterrupt:
