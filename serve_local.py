@@ -8,30 +8,24 @@
 
 import subprocess
 import sys
-import importlib.util
+import os
+from pathlib import Path
 
-REQUIRED_PACKAGES = {
-    "mkdocs": "mkdocs",
-    "material": "mkdocs-material",
-    "plantuml_markdown": "plantuml-markdown",
-    "jieba": "jieba",
-}
+REQUIREMENTS_FILE = Path(__file__).resolve().parent / "requirements.txt"
 
-def check_and_install():
-    missing = []
-    for module, package in REQUIRED_PACKAGES.items():
-        if importlib.util.find_spec(module) is None:
-            missing.append(package)
+def install_requirements():
+    if not REQUIREMENTS_FILE.exists():
+        print(f"\n❌ 未找到依赖文件: {REQUIREMENTS_FILE}")
+        sys.exit(1)
 
-    if missing:
-        print(f"⚙️  安装缺少的依赖: {', '.join(missing)}")
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "--quiet"] + missing
-        )
-        print("✅ 依赖安装完成\n")
+    print(f"⚙️  从 {REQUIREMENTS_FILE.name} 安装依赖（含版本约束）")
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "--quiet", "-r", str(REQUIREMENTS_FILE)]
+    )
+    print("✅ 依赖安装完成\n")
 
 def main():
-    check_and_install()
+    install_requirements()
 
     print("=" * 50)
     print("  本地预览服务器")
@@ -41,8 +35,12 @@ def main():
     print("⛔ Ctrl+C 停止\n")
 
     try:
+        env = os.environ.copy()
+        # mkdocs-material 9.7.x prints this banner unconditionally; keep logs clean locally.
+        env.setdefault("NO_MKDOCS_2_WARNING", "1")
         subprocess.run(
             ["mkdocs", "serve", "-a", "127.0.0.1:8008", "--open", "--watch-theme"],
+            env=env,
             check=True,
         )
     except KeyboardInterrupt:

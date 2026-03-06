@@ -6,6 +6,9 @@ deploy_to_coolify.py
 
 import sys
 import os
+import re
+import shlex
+import shutil
 import requests
 import subprocess
 import urllib3
@@ -57,6 +60,78 @@ def run(cmd, cwd=None, check=True):
     return subprocess.run(cmd, shell=True, cwd=cwd, check=check,
                           capture_output=False, text=True)
 
+def run_capture(cmd, cwd=None, check=False):
+    return subprocess.run(cmd, shell=True, cwd=cwd, check=check,
+                          capture_output=True, text=True)
+
+def detect_copilot_cli():
+    env_bin = os.environ.get("COPILOT_CLI", "").strip()
+    if env_bin and os.path.isfile(env_bin) and os.access(env_bin, os.X_OK):
+        return env_bin
+
+    which_bin = shutil.which("copilot")
+    if which_bin:
+        return which_bin
+
+    vscode_bin = os.path.expanduser(
+        "~/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli/copilot"
+    )
+    if os.path.isfile(vscode_bin) and os.access(vscode_bin, os.X_OK):
+        return vscode_bin
+
+    return None
+
+def generate_commit_message(cwd):
+    fallback = "chore: update course content"
+    cc_pattern = re.compile(
+        r"^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\([^)]+\\))?!?: .+"
+    )
+
+    # Only use staged diff so message matches what is actually committed.
+    diff_res = run_capture("git diff --cached --no-color", cwd=cwd)
+    diff_text = (diff_res.stdout or "").strip()
+    if not diff_text:
+        return fallback
+
+    # Keep prompt size bounded to avoid oversized command input.
+    diff_excerpt = diff_text[:8000]
+
+    # Uses new Copilot CLI prompt mode for non-interactive generation.
+    prompt = (
+        "Generate ONE Conventional Commit title from this staged git diff. "
+        "Output only one line in format type(scope): subject, max 72 chars, no quotes, no code block.\\n\\n"
+        f"{diff_excerpt}"
+    )
+
+    copilot_bin = detect_copilot_cli()
+    if not copilot_bin:
+        print("⚠️  未找到 Copilot CLI，使用默认提交信息")
+        return fallback
+
+    copilot_res = subprocess.run(
+        [copilot_bin, "-p", prompt, "--silent", "--allow-all-tools"],
+        cwd=cwd,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    if copilot_res.returncode != 0:
+        print("⚠️  Copilot CLI 不可用或调用失败，使用默认提交信息")
+        return fallback
+
+    lines = [line.strip() for line in (copilot_res.stdout or "").splitlines() if line.strip()]
+    if not lines:
+        print("⚠️  Copilot 未返回提交信息，使用默认提交信息")
+        return fallback
+
+    commit_msg = lines[0].strip("` ")
+    if not cc_pattern.match(commit_msg):
+        print("⚠️  Copilot 返回格式不符合 Conventional Commits，使用默认提交信息")
+        return fallback
+
+    return commit_msg
+
 # ─── Step 1: 确认本地源文件完整 ──────────────────────────────────────────────
 step("Step 1: 检查源文件")
 for required in ["mkdocs.yml", "docs", "nginx.conf"]:
@@ -83,7 +158,9 @@ run("git add .", cwd=LOCAL_DIR)
 status = subprocess.run("git status --porcelain", shell=True, cwd=LOCAL_DIR,
                         capture_output=True, text=True)
 if status.stdout.strip():
-    run('git commit -m "chore: update course content"', cwd=LOCAL_DIR)
+    commit_message = generate_commit_message(LOCAL_DIR)
+    run(f"git commit -m {shlex.quote(commit_message)}", cwd=LOCAL_DIR)
+    print(f"📝 commit message: {commit_message}")
     print("✅ 已提交更改")
 else:
     print("ℹ️  暂存区无变更，将强制触发 Coolify 重建")

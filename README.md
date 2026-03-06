@@ -56,7 +56,7 @@ GITHUB_TOKEN=<your-github-personal-access-token>
 Install local dependencies:
 
 ```bash
-pip install mkdocs mkdocs-material plantuml-markdown jieba
+pip install -r requirements.txt
 ```
 
 ### Local Preview
@@ -67,7 +67,7 @@ Start a local development server with live reload:
 python3 serve_local.py
 ```
 
-The site will be available at **http://127.0.0.1:8000**.  
+The site will be available at **http://127.0.0.1:8008**.  
 Any changes to files under `docs/` are reflected in the browser immediately.
 
 ### Deploy to Server
@@ -95,6 +95,7 @@ The production site is served at **http://robotic.uwis.cn**.
 │   ├── syllabus.md        # Syllabus
 │   └── resources.md       # References & resources
 ├── mkdocs.yml             # MkDocs configuration
+├── requirements.txt       # Pinned Python dependencies
 ├── Dockerfile             # Multi-stage build (MkDocs → nginx)
 ├── docker-compose.yaml    # Coolify deployment configuration
 ├── nginx.conf             # nginx serving configuration

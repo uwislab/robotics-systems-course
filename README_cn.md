@@ -56,7 +56,7 @@ GITHUB_TOKEN=<你的 GitHub 个人访问令牌>
 安装本地依赖：
 
 ```bash
-pip install mkdocs mkdocs-material plantuml-markdown jieba
+pip install -r requirements.txt
 ```
 
 ### 本地预览
@@ -67,7 +67,7 @@ pip install mkdocs mkdocs-material plantuml-markdown jieba
 python3 serve_local.py
 ```
 
-浏览器访问 **http://127.0.0.1:8000** 即可预览。  
+浏览器访问 **http://127.0.0.1:8008** 即可预览。  
 修改 `docs/` 目录下的任意文件后，浏览器会自动刷新。
 
 ### 部署到服务器
@@ -95,6 +95,7 @@ python3 deploy_to_coolify.py
 │   ├── syllabus.md        # 教学大纲
 │   └── resources.md       # 参考资料
 ├── mkdocs.yml             # MkDocs 配置
+├── requirements.txt       # Python 依赖（锁定主版本）
 ├── Dockerfile             # 多阶段构建（MkDocs → nginx）
 ├── docker-compose.yaml    # Coolify 部署配置
 ├── nginx.conf             # nginx 服务配置
