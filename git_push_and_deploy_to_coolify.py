@@ -219,8 +219,47 @@ def review_commit_message(initial_message):
 
         print("⚠️  无效输入，请输入 Y / E / N")
 
+def fetch_application_logs(app_uuid):
+    try:
+        resp = api("GET", f"/applications/{app_uuid}/logs")
+        if not resp.ok:
+            return None
+        data = resp.json()
+    except Exception:
+        return None
+
+    if isinstance(data, dict):
+        logs = data.get("logs", "")
+        return logs if isinstance(logs, str) else ""
+
+    if isinstance(data, str):
+        return data
+
+    return ""
+
+def print_new_log_lines(full_logs, last_logs):
+    if not full_logs or full_logs == last_logs:
+        return full_logs
+
+    if last_logs and full_logs.startswith(last_logs):
+        delta = full_logs[len(last_logs):]
+    else:
+        # If logs rotated/truncated, print tail to resync view.
+        tail_lines = full_logs.splitlines()[-30:]
+        delta = "\n".join(tail_lines)
+        if delta:
+            delta = "[log window reset]\n" + delta
+
+    for line in delta.splitlines():
+        line = line.rstrip()
+        if line:
+            print(f"  [deploy-log] {line}")
+
+    return full_logs
+
 def wait_for_site_ready(
     base_url,
+    app_uuid=None,
     timeout_sec=240,
     interval_sec=8,
     min_wait_sec=40,
@@ -239,11 +278,17 @@ def wait_for_site_ready(
     }
     last_status = {}
     success_streak = 0
+    last_logs = ""
 
     print(
         f"⏳ 等待站点就绪（最多 {timeout_sec} 秒，至少等待 {min_wait_sec} 秒，连续 {stable_rounds} 轮通过）..."
     )
     while time.time() < deadline:
+        if app_uuid:
+            logs = fetch_application_logs(app_uuid)
+            if logs is not None:
+                last_logs = print_new_log_lines(logs, last_logs)
+
         all_ok = True
         for url in checks:
             try:
@@ -404,7 +449,7 @@ if app:
         print(f"❌ 触发失败 HTTP {resp.status_code}: {resp.text}")
         sys.exit(1)
 
-    if not wait_for_site_ready(DOMAIN):
+    if not wait_for_site_ready(DOMAIN, app_uuid=APP_UUID):
         sys.exit(1)
 
     print(f"\n🌐 站点地址: {DOMAIN}")
@@ -429,7 +474,7 @@ else:
     if resp.status_code in (200, 201):
         data = resp.json()
         APP_UUID = data.get("uuid")
-        if not wait_for_site_ready(DOMAIN):
+        if not wait_for_site_ready(DOMAIN, app_uuid=APP_UUID):
             sys.exit(1)
         print(f"✅ 应用创建成功！  uuid={APP_UUID}")
         print(f"🌐 站点地址: {data.get('domains', DOMAIN)}")
