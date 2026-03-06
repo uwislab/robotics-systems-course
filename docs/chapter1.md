@@ -2,6 +2,123 @@
 ## 机器人控制技术
 成都信息工程大学 软件工程学院
 
+## 本章知识导图
+
+```plantuml
+@startmindmap
+skinparam mindmapNodeBackgroundColor<<root>>    #1565C0
+skinparam mindmapNodeFontColor<<root>>          white
+skinparam mindmapNodeBackgroundColor<<l1>>      #1976D2
+skinparam mindmapNodeFontColor<<l1>>            white
+skinparam mindmapNodeBackgroundColor<<l1r>>     #0277BD
+skinparam mindmapNodeFontColor<<l1r>>           white
+skinparam ArrowColor                            #90CAF9
+skinparam mindmapNodeBorderColor                #90CAF9
+
+* 第1章\n机器人基础
+
+** 机器人概论
+*** 定义与历史
+**** 多种定义（ISO / 感知-决策-执行）
+**** 发展历程：古代→早期→现代→当代
+*** 机器人结构
+**** 本体（执行机构）
+**** 感知系统（传感器）
+**** 控制系统（嵌入式处理器）
+**** 决策系统（AI / 算法）
+*** 机器人分类
+**** 按运动方式
+**** 按智能程度
+**** 按用途 / 驱动方式
+*** 产业与前景
+**** 我国四大区域集群
+**** 现存问题与发展展望
+
+** 嵌入式系统基础
+*** 体系结构
+**** 硬件层
+**** 驱动层
+**** 系统软件层（RTOS）
+**** 应用层
+*** STM32 芯片
+**** 命名规则（F103C8T6 解读）
+**** 产品系列（F0/F1/F4/H7/L系列）
+**** 核心特性（ARM Cortex-M3 / 72MHz）
+**** 开发生态（HAL库 / CubeMX / CubeIDE）
+
+** 最小系统\n与开发板
+*** 最小系统结构
+**** 电源电路（LDO / 去耦电容）
+**** 时钟电路（HSE 8MHz 晶振）
+**** 复位电路（RC + 按键）
+**** 启动模式（BOOT0 / BOOT1）
+**** 调试接口（SWD）
+*** Blue Pill 开发板
+**** 硬件规格（72MHz / 20KB RAM）
+**** 引脚布局（2×20 排针）
+**** 板载资源（LED / USB / SWD）
+*** 电路图解读
+**** LED 电路局部分析
+**** 芯片引脚→板上排针追踪
+**** 看懂电路图的6个要点
+*** 嵌入式电路基础
+**** 工作电压与电平标准
+**** GPIO 驱动能力
+**** LED 限流电阻计算
+**** 上拉 / 下拉电阻
+**** 去耦电容
+
+** STM32CubeMX\n图形化工具
+*** 图形化引脚配置（Pin View）
+**** 点击引脚选择功能
+**** 设置 GPIO 模式 / 速率 / User Label
+*** 可视化时钟树
+**** 填目标频率自动计算 PLL
+*** 外设图形化配置
+**** USART / SPI / I2C / ADC / TIM
+**** 自动检测引脚冲突
+*** 自动生成工程框架
+**** USER CODE BEGIN/END 保护机制
+**** .ioc 文件可重复编辑
+*** 中间件 / RTOS 支持
+**** FreeRTOS（多任务 / 信号量 / 队列）
+**** LwIP（TCP/IP 协议栈）
+**** FatFS（文件系统）
+
+** 第一个程序\nLED 闪烁
+*** 程序基本结构
+**** 头文件包含
+**** 函数声明
+**** main()：初始化 + while(1)
+**** SystemClock_Config()
+**** MX_GPIO_Init()
+*** 从电路图确定引脚
+**** LED 阴极 → PC13
+**** 低电平点亮逻辑
+*** GPIO 工作模式（8种）
+**** 输入：浮空 / 上拉 / 下拉 / 模拟
+**** 输出：推挽(PP) / 开漏(OD)
+**** 复用：复用推挽 / 复用开漏
+**** 本程序使用：推挽输出(PP)
+*** 程序实现
+**** HAL 库版本（WritePin / Delay）
+**** 寄存器版本（CRH / BSRR）
+
+** STM32 外设\n与 I/O 模型
+*** 核心外设接口
+**** GPIO / USART / SPI / I2C
+**** ADC / DAC / TIM / USB
+*** 串行通信对比
+**** UART / SPI / I2C / CAN
+*** 输入-加工-输出模型
+**** 输入（传感器 / GPIO / ADC）
+**** 加工（CPU / RTOS / 算法）
+**** 输出（GPIO / PWM / 显示）
+@endmindmap
+```
+
+
+
 ## 2016年机器人行业十大新闻事件
 1. 人机大战：AlphaGo以4：1战胜李世石，上演"人工智能PK人类智慧"
 2. 中国发布机器人产业白皮书，中国机器人产业已形成环渤海、珠三角、长三角和中西部四大区域集群
@@ -461,6 +578,221 @@ Blue Pill 在 PC13 引脚上连接了一颗 LED，是学习 GPIO 控制的第一
 ```
 
 > **小结**：Blue Pill 开发板本质上就是一块 STM32F103 最小系统板，在掌握最小系统的原理后，便能看懂并读懂 Blue Pill 的原理图，进而自行设计定制化的嵌入式硬件。
+
+---
+
+## STM32CubeMX 图形化开发工具
+
+### 工具概述
+
+**STM32CubeMX** 是 ST（意法半导体）官方推出的**图形化初始化代码生成工具**，是 STM32 生态的核心组成部分。它将繁琐的芯片初始化配置（时钟树、引脚模式、外设参数）转变为**可视化的鼠标点选操作**，并自动生成完整的 HAL 库初始化代码框架，极大地降低了 STM32 开发的入门门槛。
+
+```text
+  STM32CubeMX 在开发流程中的位置：
+
+  ┌─────────────────┐    CubeMX 自动生成     ┌──────────────────────┐
+  │   图形化配置     │ ──────────────────►   │  C 语言工程框架        │
+  │                 │                       │                      │
+  │  • 芯片型号选择  │                       │  main.c              │
+  │  • 引脚功能分配  │                       │  stm32f1xx_hal.h     │
+  │  • 时钟树配置   │                       │  SystemClock_Config()│
+  │  • 外设参数设置  │                       │  MX_GPIO_Init()      │
+  │  • 中间件选择   │                       │  MX_USART_Init() ... │
+  └─────────────────┘                       └──────────────────────┘
+           ↑                                          │
+     开发者完成                                        ▼
+     （无需手写初始化代码）                      开发者只需在此基础上
+                                               填写业务逻辑代码
+```
+
+STM32CubeMX 可**独立安装**使用，也可作为插件集成进 **STM32CubeIDE**（ST 官方 IDE）中。两者配合使用是当前 STM32 开发的主流工作流。
+
+### 关键特色
+
+#### 一、图形化芯片引脚配置
+
+CubeMX 提供直观的**芯片俯视图（Pin View）**，开发者可在图形界面上逐一点击每个引脚，从下拉菜单中选择功能，无需查阅数百页的数据手册。
+
+```text
+  CubeMX 引脚配置界面示意：
+
+  ┌──────────────────────────────────────────────────────┐
+  │   STM32F103C8T6  引脚视图（Pin View）                  │
+  │                                                      │
+  │         PA0  ●── [GPIO_Input ▼]                      │
+  │         PA1  ●── [未分配]                             │
+  │         ...                                          │
+  │         PC13 ●── [GPIO_Output ▼] ◄── 点击选择功能     │
+  │         PC14 ●── [RCC_OSC32_IN]                      │
+  │         PC15 ●── [RCC_OSC32_OUT]                     │
+  │                                                      │
+  │    配置面板（选中 PC13 后显示）：                        │
+  │    ┌────────────────────────────────┐                │
+  │    │  GPIO mode:  Output Push Pull  │                │
+  │    │  GPIO speed: Low               │                │
+  │    │  Initial:    High (LED 默认灭)  │                │
+  │    │  User Label: LED               │                │
+  │    └────────────────────────────────┘                │
+  └──────────────────────────────────────────────────────┘
+```
+
+主要配置项：
+
+| 配置项 | 说明 |
+| ------ | ---- |
+| **GPIO mode** | 选择引脚工作模式（推挽输出、开漏输出、上拉输入等8种） |
+| **GPIO speed** | 选择输出速率（Low / Medium / High，影响信号边沿陡峭程度） |
+| **GPIO Pull-up/Pull-down** | 内部上/下拉配置 |
+| **Initial output level** | 初始电平（High 或 Low） |
+| **User Label** | 为引脚起别名（如 `LED`），生成代码时自动替换为宏定义 |
+
+> 设置 User Label 后，CubeMX 生成的代码中会自动创建 `#define LED_Pin GPIO_PIN_13` 和 `#define LED_GPIO_Port GPIOC` 宏，程序可读性更强。
+
+#### 二、可视化时钟树配置
+
+时钟树配置是 STM32 开发中最容易出错的环节。CubeMX 提供**时钟树图形界面（Clock Configuration）**，开发者直接填写目标主频，工具自动计算 PLL 倍频系数、总线分频比，并实时校验是否超出芯片规格。
+
+```text
+  CubeMX 时钟树配置示意（Blue Pill，目标 72 MHz）：
+
+  HSE（外部晶振）         PLL 倍频                系统时钟
+   8 MHz  ──►  [÷1]  ──►  [×9]  ──►  SYSCLK = 72 MHz
+                                          │
+                                ┌─────────┼──────────┐
+                               AHB       APB1       APB2
+                              ÷1        ÷2          ÷1
+                             72 MHz    36 MHz      72 MHz
+                                        │
+                               （外设如 USART2、I2C1 挂在此处）
+
+  ↑ 开发者只需在 "HCLK (MHz)" 框中输入 "72"，CubeMX 自动补全其余参数
+```
+
+#### 三、外设图形化配置
+
+对于每一个使用的外设（USART、SPI、I2C、ADC、定时器、USB 等），CubeMX 均提供独立的配置面板，以 USART1 为例：
+
+```text
+  USART1 配置面板示意：
+  ┌────────────────────────────────┐
+  │  Mode:       Asynchronous      │  ← 异步串口模式
+  │  Baud Rate:  115200 Bits/s     │
+  │  Word Length: 8 Bits           │
+  │  Parity:     None              │
+  │  Stop Bits:  1                 │
+  │  Hardware Flow Control: None   │
+  └────────────────────────────────┘
+  → 生成 MX_USART1_UART_Init() 函数，填充完整 HAL_UART_Init() 调用
+```
+
+所有外设配置完成后，**引脚冲突检测**会自动高亮冲突引脚（红色），帮助开发者在写代码前就发现硬件分配错误。
+
+#### 四、自动生成完整工程框架
+
+点击 **"Generate Code"** 按钮后，CubeMX 生成一个完整的可编译工程，其结构如下：
+
+```text
+  CubeMX 生成的工程结构：
+
+  MyProject/
+  ├── Core/
+  │   ├── Inc/
+  │   │   ├── main.h              ← 引脚宏定义（User Label → #define）
+  │   │   └── stm32f1xx_hal_conf.h
+  │   └── Src/
+  │       ├── main.c              ← 主程序（含 /* USER CODE BEGIN/END */ 注释区）
+  │       ├── stm32f1xx_it.c      ← 中断服务函数（自动生成框架）
+  │       └── system_stm32f1xx.c  ← 系统时钟初始化
+  ├── Drivers/
+  │   ├── STM32F1xx_HAL_Driver/   ← HAL 库源码（ST 提供，无需修改）
+  │   └── CMSIS/                  ← ARM 内核接口层
+  └── MyProject.ioc               ← CubeMX 配置文件（可重新打开编辑）
+```
+
+关键设计：生成的 `main.c` 中大量使用 `/* USER CODE BEGIN xxx */` 和 `/* USER CODE END xxx */` 注释对：
+
+```c
+int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+
+    /* USER CODE BEGIN 2 */
+    // ← 开发者在此添加初始化后的自定义代码
+    /* USER CODE END 2 */
+
+    while (1)
+    {
+        /* USER CODE BEGIN WHILE */
+        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);   // ← 开发者填写的业务逻辑
+        HAL_Delay(500);
+        /* USER CODE END WHILE */
+    }
+}
+```
+
+> **重要机制**：用户代码**只能写在 `USER CODE BEGIN/END` 之间**。这样当需要修改硬件配置、重新用 CubeMX 生成代码时，工具会保留注释块内的代码，**不会覆盖开发者已写的业务逻辑**。
+
+#### 五、中间件与 RTOS 支持
+
+CubeMX 的 **Middleware（中间件）** 配置页面，支持一键集成多种软件组件：
+
+```text
+  CubeMX Middleware 支持列表（部分）：
+
+  ┌──────────────────────────────────────────────────────┐
+  │  RTOS（实时操作系统）                                  │
+  │  ├─ FreeRTOS ★        ← 最常用，开源免费              │
+  │  └─ Azure RTOS (ThreadX)                             │
+  │                                                      │
+  │  通信协议栈                                           │
+  │  ├─ LwIP（轻量级 TCP/IP）                             │
+  │  ├─ USB Device / Host                                │
+  │  └─ Mbed TLS（加密库）                               │
+  │                                                      │
+  │  文件系统                                             │
+  │  └─ FatFS（SD 卡 / Flash 文件系统）                   │
+  └──────────────────────────────────────────────────────┘
+```
+
+**FreeRTOS 集成特别说明：**
+
+FreeRTOS 是嵌入式领域使用最广泛的开源实时操作系统（RTOS），支持多任务、信号量、消息队列、软件定时器等特性。在 CubeMX 中启用 FreeRTOS 后：
+
+1. CubeMX 自动将 FreeRTOS 源码加入工程
+2. 提供图形界面配置任务（Task）、堆栈大小、优先级
+3. 自动生成 `freertos.c`，包含任务创建代码框架
+4. 自动处理 SysTick 冲突（FreeRTOS 占用 SysTick，HAL 改用 TIM）
+
+```c
+/* CubeMX 为 FreeRTOS 生成的任务框架示例 */
+void StartDefaultTask(void *argument)
+{
+    /* USER CODE BEGIN StartDefaultTask */
+    for(;;)
+    {
+        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+        osDelay(500);   /* FreeRTOS 延时，让出 CPU 给其他任务 */
+    }
+    /* USER CODE END StartDefaultTask */
+}
+```
+
+> 使用 FreeRTOS 后，LED 闪烁变成了一个独立的**任务（Task）**，系统可同时运行多个任务（如同时控制 LED 和读取传感器），这正是机器人控制系统所必需的多任务能力。
+
+### CubeMX 与手写代码的对比
+
+| 维度 | 手写 HAL 代码 | CubeMX 生成代码 |
+| ---- | ------------ | --------------- |
+| 初始化代码 | 需手动查手册编写 | 图形配置，自动生成 |
+| 引脚冲突检测 | 依赖开发者经验 | 自动高亮冲突 |
+| 时钟配置 | 手动计算 PLL 参数 | 填目标频率自动计算 |
+| 重新配置 | 全部重写 | 修改 .ioc 文件，重新生成 |
+| FreeRTOS 集成 | 手动移植，步骤复杂 | 勾选即可，自动配置 |
+| 适合阶段 | 深入理解底层原理 | 快速搭建项目，工程实践 |
+
+> **本课程建议**：使用 **STM32CubeIDE + CubeMX** 作为主要开发环境，借助图形化工具快速完成外设初始化，将精力集中在控制算法和机器人业务逻辑的编写上。
 
 ---
 

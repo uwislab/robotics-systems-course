@@ -9,7 +9,9 @@ import os
 import re
 import shlex
 import shutil
+import tempfile
 import requests
+import time
 import subprocess
 import urllib3
 
@@ -33,7 +35,7 @@ GITHUB_TOKEN  = os.environ.get("GITHUB_TOKEN", "")
 GIT_REPO      = "https://github.com/uwislab/robotics-systems-course.git"
 GIT_REPO_AUTH = f"https://{GITHUB_TOKEN}@github.com/uwislab/robotics-systems-course.git"
 GIT_BRANCH    = "main"
-DOMAIN        = "http://robotic.uwis.cn"
+DOMAIN        = "https://robotic.uwis.cn"
 ENVIRONMENT   = "production"
 LOCAL_DIR     = os.path.dirname(os.path.abspath(__file__))  # 脚本所在目录
 # ──────────────────────────────────────────────────────────────────────────────
@@ -47,6 +49,10 @@ HEADERS = {
     "Content-Type": "application/json",
     "Accept": "application/json",
 }
+
+CC_PATTERN = re.compile(
+    r"^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?!?: .+"
+)
 
 def api(method, path, **kwargs):
     url = f"{COOLIFY_BASE}{path}"
@@ -83,9 +89,6 @@ def detect_copilot_cli():
 
 def generate_commit_message(cwd):
     fallback = "chore: update course content"
-    cc_pattern = re.compile(
-        r"^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\([^)]+\\))?!?: .+"
-    )
 
     # Only use staged diff so message matches what is actually committed.
     diff_res = run_capture("git diff --cached --no-color", cwd=cwd)
@@ -126,11 +129,127 @@ def generate_commit_message(cwd):
         return fallback
 
     commit_msg = lines[0].strip("` ")
-    if not cc_pattern.match(commit_msg):
+    if not CC_PATTERN.match(commit_msg):
         print("⚠️  Copilot 返回格式不符合 Conventional Commits，使用默认提交信息")
         return fallback
 
     return commit_msg
+
+def edit_commit_message_tui(initial_message):
+    editor_env = os.environ.get("VISUAL") or os.environ.get("EDITOR")
+    editor_cmd = shlex.split(editor_env) if editor_env else None
+    if not editor_cmd:
+        for candidate in ("nano", "vim", "vi"):
+            if shutil.which(candidate):
+                editor_cmd = [candidate]
+                break
+
+    if not editor_cmd:
+        print("⚠️  未找到可用终端编辑器，请设置 EDITOR 或安装 nano/vim")
+        return None
+
+    fd, path = tempfile.mkstemp(prefix="commit-msg-", suffix=".txt", text=True)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(initial_message.strip() + "\n")
+
+        res = subprocess.run(editor_cmd + [path], check=False)
+        if res.returncode != 0:
+            print("⚠️  编辑器非正常退出，保留原提交信息")
+            return None
+
+        with open(path, "r", encoding="utf-8") as f:
+            lines = [
+                line.strip() for line in f
+                if line.strip() and not line.lstrip().startswith("#")
+            ]
+
+        if not lines:
+            print("⚠️  未输入有效提交信息，保留原提交信息")
+            return None
+
+        return lines[0]
+    finally:
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+
+def review_commit_message(initial_message):
+    commit_message = initial_message.strip() or "chore: update course content"
+
+    # Keep non-interactive runs deterministic (CI/cron) and avoid waiting for input.
+    if not sys.stdin.isatty():
+        print(f"📝 commit message: {commit_message}")
+        print("⚠️  非交互终端，跳过人工确认，继续提交")
+        return commit_message, True
+
+    while True:
+        print("\n--- Commit Message Review ---")
+        print(f"当前提交信息: {commit_message}")
+        if not CC_PATTERN.match(commit_message):
+            print("⚠️  当前提交信息不符合 Conventional Commits")
+
+        choice = input("请选择 [Y]确认提交 / [E]编辑 / [N]中断: ").strip().lower()
+        if choice in ("", "y", "yes"):
+            if CC_PATTERN.match(commit_message):
+                return commit_message, True
+
+            force = input("提交信息不规范，是否仍继续提交？[y/N]: ").strip().lower()
+            if force in ("y", "yes"):
+                return commit_message, True
+            continue
+
+        if choice in ("e", "edit"):
+            print("🖊️  即将打开终端编辑器（支持粘贴与光标移动）")
+            edited = edit_commit_message_tui(commit_message)
+            if edited is None:
+                fallback_edit = input("可改为单行输入（留空保留原值）: ").strip()
+                if fallback_edit:
+                    commit_message = fallback_edit
+                else:
+                    print("⚠️  未修改，保留原提交信息")
+            else:
+                commit_message = edited
+            continue
+
+        if choice in ("n", "no", "q", "quit", "abort"):
+            return commit_message, False
+
+        print("⚠️  无效输入，请输入 Y / E / N")
+
+def wait_for_site_ready(base_url, timeout_sec=180, interval_sec=8):
+    deadline = time.time() + timeout_sec
+    checks = [
+        f"{base_url}/",
+        f"{base_url}/assets/stylesheets/main.484c7ddc.min.css",
+        f"{base_url}/assets/javascripts/bundle.79ae519e.min.js",
+    ]
+    last_status = {}
+
+    print(f"⏳ 等待站点就绪（最多 {timeout_sec} 秒）...")
+    while time.time() < deadline:
+        all_ok = True
+        for url in checks:
+            try:
+                r = requests.get(url, timeout=10, verify=False)
+                last_status[url] = r.status_code
+                if r.status_code != 200:
+                    all_ok = False
+            except requests.RequestException:
+                all_ok = False
+                last_status[url] = "ERR"
+
+        if all_ok:
+            print("✅ 站点已就绪，首页与关键静态资源可访问")
+            return True
+
+        print(f"  站点未就绪，{interval_sec}s 后重试: {last_status}")
+        time.sleep(interval_sec)
+
+    print("❌ 站点在等待窗口内仍未就绪，请检查 Coolify 部署日志")
+    print(f"  最后探测状态: {last_status}")
+    return False
 
 # ─── Step 1: 确认本地源文件完整 ──────────────────────────────────────────────
 step("Step 1: 检查源文件")
@@ -158,7 +277,12 @@ run("git add .", cwd=LOCAL_DIR)
 status = subprocess.run("git status --porcelain", shell=True, cwd=LOCAL_DIR,
                         capture_output=True, text=True)
 if status.stdout.strip():
-    commit_message = generate_commit_message(LOCAL_DIR)
+    generated_message = generate_commit_message(LOCAL_DIR)
+    commit_message, should_commit = review_commit_message(generated_message)
+    if not should_commit:
+        print("⏹️  已中断提交，后续 push 与部署已取消")
+        sys.exit(0)
+
     run(f"git commit -m {shlex.quote(commit_message)}", cwd=LOCAL_DIR)
     print(f"📝 commit message: {commit_message}")
     print("✅ 已提交更改")
@@ -242,8 +366,11 @@ if app:
         print(f"❌ 触发失败 HTTP {resp.status_code}: {resp.text}")
         sys.exit(1)
 
+    if not wait_for_site_ready(DOMAIN):
+        sys.exit(1)
+
     print(f"\n🌐 站点地址: {DOMAIN}")
-    print("⏳ 请等待约 1~2 分钟后访问查看课程内容")
+    print("🎉 你现在可以直接访问查看课程内容")
 
 else:
     step("Step 6: 创建静态站点应用并立即部署")
@@ -264,9 +391,11 @@ else:
     if resp.status_code in (200, 201):
         data = resp.json()
         APP_UUID = data.get("uuid")
+        if not wait_for_site_ready(DOMAIN):
+            sys.exit(1)
         print(f"✅ 应用创建成功！  uuid={APP_UUID}")
         print(f"🌐 站点地址: {data.get('domains', DOMAIN)}")
-        print("⏳ 请等待约 1~2 分钟后访问查看课程内容")
+        print("🎉 你现在可以直接访问查看课程内容")
     else:
         print(f"❌ 创建失败 HTTP {resp.status_code}: {resp.text}")
         sys.exit(1)
