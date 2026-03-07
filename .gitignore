@@ -36,3 +36,9 @@ secrets.yml
 
 # 日志
 *.log
+
+# 数据库文件（运行时数据，不提交）
+*.db
+*.sqlite
+*.sqlite3
+.local_exam_data/
