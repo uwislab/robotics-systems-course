@@ -18,6 +18,10 @@ from app.database import db
 
 DOCS_DIR = os.environ.get("DOCS_DIR", "")
 
+# 内置备用文档目录：镜像构建时打包的 docs 副本（/app/docs_baked/）
+# 当 DOCS_DIR 挂载失败或为空目录时，自动回退到此目录
+_BAKED_DOCS_DIR = Path(__file__).parent.parent / "docs_baked"
+
 _QUIZ_RE       = re.compile(r"<quiz\b",                              re.IGNORECASE)
 _META_DIV_RE   = re.compile(r'<div[^>]+id=["\']exam-meta["\']',     re.IGNORECASE)
 _META_ID_RE    = re.compile(r'data-exam-id=["\']([^"\']+)["\']',    re.IGNORECASE)
@@ -66,11 +70,29 @@ def _inject_exam_meta(content: str, exam_id: str, exam_title: str) -> str:
     return new_content
 
 
+def _find_docs_dir() -> "Path | None":
+    """按优先级查找有效的文档目录（含 .md 文件）。"""
+    # 优先使用环境变量指定的目录（支持 bind mount 写回）
+    if DOCS_DIR:
+        candidate = Path(DOCS_DIR)
+        if candidate.is_dir() and any(candidate.rglob("*.md")):
+            return candidate
+        if candidate.is_dir():
+            print(f"[sync_exams] DOCS_DIR={DOCS_DIR!r} 目录为空或无 .md 文件，尝试内置备用目录")
+
+    # 回退到镜像内置的备用文档目录（/app/docs_baked/）
+    if _BAKED_DOCS_DIR.is_dir() and any(_BAKED_DOCS_DIR.rglob("*.md")):
+        print(f"[sync_exams] 使用内置备用文档目录: {_BAKED_DOCS_DIR}")
+        return _BAKED_DOCS_DIR
+
+    return None
+
+
 def sync_exams() -> dict:
-    """扫描 DOCS_DIR，自动修复 .md 文件并同步数据库。返回操作摘要字典。"""
-    docs_dir = Path(DOCS_DIR) if DOCS_DIR else None
-    if not docs_dir or not docs_dir.is_dir():
-        print(f"[sync_exams] DOCS_DIR 未设置或不存在（{DOCS_DIR!r}），跳过扫描")
+    """扫描文档目录，自动修复 .md 文件并同步数据库。返回操作摘要字典。"""
+    docs_dir = _find_docs_dir()
+    if docs_dir is None:
+        print(f"[sync_exams] 未找到有效文档目录（DOCS_DIR={DOCS_DIR!r}），跳过扫描")
         return {}
 
     found:    dict[str, str] = {}
@@ -100,11 +122,15 @@ def sync_exams() -> dict:
                 conn.execute("INSERT INTO exams (id, title, is_active) VALUES (?,?,1)", (eid, etitle))
                 added.append(eid)
                 print(f"[sync_exams] 数据库新增考试：{eid} - {etitle}")
-        for eid in existing:
-            if eid not in found:
-                conn.execute("DELETE FROM exams WHERE id=?", (eid,))
-                deleted.append(eid)
-                print(f"[sync_exams] 数据库删除孤立考试：{eid}")
+        # 只有在确实扫描到考试文档时才清理孤立记录，防止挂载目录为空时误删所有考试
+        if found:
+            for eid in list(existing):
+                if eid not in found:
+                    conn.execute("DELETE FROM exams WHERE id=?", (eid,))
+                    deleted.append(eid)
+                    print(f"[sync_exams] 数据库删除孤立考试：{eid}")
+        elif existing:
+            print(f"[sync_exams] ⚠️  文档扫描结果为空，跳过孤立记录清理（保留 {len(existing)} 条现有记录）")
 
     print(f"[sync_exams] 完成：发现 {len(found)} 个考试，"
           f"注入 {len(injected)} 个文件，DB 新增 {len(added)}，删除 {len(deleted)}")

@@ -17,7 +17,8 @@ services:
 
   api:
     build:
-      context: ./backend
+      context: .                        # 构建上下文扩展到项目根目录（需要复制 docs/）
+      dockerfile: backend/Dockerfile
       network: host          # 构建时 pip install 需要访问互联网
     expose:
       - "8000"

@@ -53,6 +53,11 @@ DOMAIN       = "https://robotic.uwis.cn"
 ENVIRONMENT  = "production"
 COMPOSE_SERVICE = "web"
 API_ENV_VARS    = ["TEACHER_PASSWORD", "JWT_SECRET"]
+# 容器内固定路径的环境变量（不来自本地 .env，而是远程容器的配置）
+CONTAINER_FIXED_ENV = {
+    "DOCS_DIR": "/app/docs",
+    "DB_PATH":  "/app/data/exam.db",
+}
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -370,7 +375,10 @@ def _sync_env_vars(app_uuid: str):
     if missing:
         print(f"⚠️  本地 .env 缺少 {missing}，将用 docker-compose 默认值")
 
-    for key, value in vars_to_sync.items():
+    # 合并容器固定路径变量（DOCS_DIR、DB_PATH 等）
+    all_vars = {**vars_to_sync, **CONTAINER_FIXED_ENV}
+
+    for key, value in all_vars.items():
         if not value:
             continue
         # This Coolify version uses PATCH on the collection endpoint as an upsert

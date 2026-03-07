@@ -1,0 +1,19 @@
+# 排除不需要进入 api 镜像构建上下文的文件
+site/
+.git/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+.local_exam_data/
+.env
+.env.*
+*.db
+*.sqlite
+*.sqlite3
+deploy_local_or_coolify.py
+requirements.txt
+mkdocs.yml
+README*.md
+nginx.conf
