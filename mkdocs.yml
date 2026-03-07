@@ -15,6 +15,12 @@ theme:
   features:
     - navigation.expand
 
+extra_css:
+  - assets/stylesheets/exam-login.css
+
+extra_javascript:
+  - assets/javascripts/exam-login.js
+
 plugins:
   - search:
       lang:

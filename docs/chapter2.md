@@ -747,6 +747,8 @@ void StartProcessTask(void *argument)
 
 ## 7  本章在线测试（10 题）
 
+<div id="exam-meta" data-exam-id="chapter2" data-exam-title="第二章 CubeMX编程测验" style="display:none"></div>
+
 <!-- mkdocs-quiz intro -->
 
 <quiz>
