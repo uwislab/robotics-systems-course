@@ -55,42 +55,10 @@ def init_db():
             UNIQUE(student_id, exam_id)
         );
         """)
-        # 预置考试
+        # 预置考试科目（每章一条，INSERT OR IGNORE 保证不重复添加）
         conn.execute("""
         INSERT OR IGNORE INTO exams (id, title) VALUES
             ('chapter1', '第一章 机器人基础测验'),
-            ('chapter2', '第二章 CubeMX编程测验')
+            ('chapter2', '第二章 CubeMX编程测验'),
+            ('chapter3', '第三章 PicSimlab仿真开发测验')
         """)
-        # 预置测试学生（仅在名单为空时插入，避免覆盖正式数据）
-        count = conn.execute("SELECT COUNT(*) FROM students").fetchone()[0]
-        if count == 0:
-            _seed_test_students(conn)
-
-
-def _seed_test_students(conn):
-    """插入测试用学生名单，仅在首次初始化空数据库时调用。"""
-    from pypinyin import lazy_pinyin, Style
-
-    students = [
-        ("张伟",   "20230001", "2023级软工1班"),
-        ("李娜",   "20230002", "2023级软工1班"),
-        ("王芳",   "20230003", "2023级软工1班"),
-        ("刘洋",   "20230004", "2023级软工2班"),
-        ("陈静",   "20230005", "2023级软工2班"),
-        ("杨磊",   "20230006", "2023级软工2班"),
-        ("赵敏",   "20230007", "2023级软工3班"),
-        ("吴鹏",   "20230008", "2023级软工3班"),
-        ("周欣",   "20230009", "2023级软工3班"),
-        ("徐晨",   "20230010", "2023级软工3班"),
-    ]
-    records = []
-    for name, sid, cls in students:
-        pinyin = "".join(lazy_pinyin(name, style=Style.NORMAL)).lower()
-        abbr   = "".join(lazy_pinyin(name, style=Style.FIRST_LETTER)).lower()
-        records.append((name, sid, cls, pinyin, abbr))
-
-    conn.executemany("""
-        INSERT OR IGNORE INTO students (name, student_id, class_name, pinyin, pinyin_abbr)
-        VALUES (?,?,?,?,?)
-    """, records)
-    print(f"[init_db] 已预置 {len(records)} 名测试学生")
