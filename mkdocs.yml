@@ -10,6 +10,7 @@ nav:
       - 第1章 机器人基础: chapter1.md
       - 第2章 CubeMX编程指南: chapter2.md
       - 第3章 PicSimlab仿真开发: chapter3.md
+      - 第4章 嵌入式软件设计模式: chapter4.md
   - 参考资料: resources.md
 theme:
   name: material
