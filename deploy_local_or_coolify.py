@@ -370,32 +370,13 @@ def _sync_env_vars(app_uuid: str):
     if missing:
         print(f"⚠️  本地 .env 缺少 {missing}，将用 docker-compose 默认值")
 
-    resp = _coolify_api("GET", f"/applications/{app_uuid}/envs")
-    existing = {}
-    if resp.ok:
-        for env in resp.json():
-            # Coolify may return "uuid" or "id" depending on version
-            env_id = env.get("uuid") or env.get("id", "")
-            key = env.get("key", "")
-            if key and env_id:
-                existing[key] = str(env_id)
-    else:
-        print(f"  ℹ️  获取现有环境变量失败 HTTP {resp.status_code}，将尝试直接创建")
-
     for key, value in vars_to_sync.items():
         if not value:
             continue
-        r = None
-        if key in existing:
-            r = _coolify_api("PATCH", f"/applications/{app_uuid}/envs/{existing[key]}",
-                             json={"key": key, "value": value})
-            # Fall back to POST if PATCH returns 404 (stale UUID or version mismatch)
-            if r.status_code == 404:
-                r = None
-        if r is None:
-            r = _coolify_api("POST", f"/applications/{app_uuid}/envs",
-                             json={"key": key, "value": value,
-                                   "is_preview": False, "is_build_time": False})
+        # This Coolify version uses PATCH on the collection endpoint as an upsert
+        # (create-or-update). POST returns 409 if the key already exists.
+        r = _coolify_api("PATCH", f"/applications/{app_uuid}/envs",
+                         json={"key": key, "value": value})
         if r.ok:
             print(f"  ✅ 环境变量 {key}")
         else:
