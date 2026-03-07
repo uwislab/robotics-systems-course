@@ -64,7 +64,8 @@ pip install -r requirements.txt
 Start a local development server with live reload:
 
 ```bash
-python3 serve_local.py
+python3 deploy_local_or_coolify.py
+# Select [1] Local Preview
 ```
 
 The site will be available at **http://127.0.0.1:8008**.  
@@ -75,14 +76,14 @@ Any changes to files under `docs/` are reflected in the browser immediately.
 Once satisfied with local testing, deploy to the production server (Coolify):
 
 ```bash
-python3 deploy_to_coolify.py
+python3 deploy_local_or_coolify.py
+# Select [2] Deploy to Coolify
 ```
 
 This script will:
 1. Verify that required source files exist
-2. Commit and push changes to GitHub
-3. Locate the Coolify application
-4. Trigger a forced rebuild and redeployment
+2. Locate the Coolify application
+3. Trigger a forced rebuild and redeployment
 
 The production site is served at **http://robotic.uwis.cn**.
 
@@ -99,8 +100,7 @@ The production site is served at **http://robotic.uwis.cn**.
 ├── Dockerfile             # Multi-stage build (MkDocs → nginx)
 ├── docker-compose.yaml    # Coolify deployment configuration
 ├── nginx.conf             # nginx serving configuration
-├── serve_local.py         # Local preview script
-├── deploy_to_coolify.py   # One-command deployment script
+├── deploy_local_or_coolify.py              # Unified management script (local preview & deploy)
 ├── .env                   # Secrets (not committed to git)
 └── .gitignore
 ```

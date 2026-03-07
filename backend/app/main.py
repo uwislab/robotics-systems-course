@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 import os
 
 from app.database import init_db
+from app.sync_exams import sync_exams
 from app.routers import students, auth, exam, teacher
 
 app = FastAPI(title="机器人系统课程考试系统", docs_url="/api/docs")
@@ -37,3 +38,4 @@ def score_page():
 @app.on_event("startup")
 def startup():
     init_db()
+    sync_exams()

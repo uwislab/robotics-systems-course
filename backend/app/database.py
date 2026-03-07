@@ -55,10 +55,4 @@ def init_db():
             UNIQUE(student_id, exam_id)
         );
         """)
-        # 预置考试科目（每章一条，INSERT OR IGNORE 保证不重复添加）
-        conn.execute("""
-        INSERT OR IGNORE INTO exams (id, title) VALUES
-            ('chapter1', '第一章 机器人基础测验'),
-            ('chapter2', '第二章 CubeMX编程测验'),
-            ('chapter3', '第三章 PicSimlab仿真开发测验')
-        """)
+        # 考试记录由 sync_exams() 根据 .md 文件动态维护，此处不再硬编码预置

@@ -64,7 +64,8 @@ pip install -r requirements.txt
 启动支持热重载的本地开发服务器：
 
 ```bash
-python3 serve_local.py
+python3 deploy_local_or_coolify.py
+# 选择 [1] 本地预览
 ```
 
 浏览器访问 **http://127.0.0.1:8008** 即可预览。  
@@ -75,14 +76,14 @@ python3 serve_local.py
 本地测试满意后，执行以下命令部署到线上服务器（Coolify）：
 
 ```bash
-python3 deploy_to_coolify.py
+python3 deploy_local_or_coolify.py
+# 选择 [2] 远程部署（Coolify）
 ```
 
 该脚本会自动完成以下步骤：
 1. 检查必要的源文件是否存在
-2. 提交并推送变更到 GitHub
-3. 定位 Coolify 应用
-4. 触发强制重建与重新部署
+2. 定位 Coolify 应用
+3. 触发强制重建与重新部署
 
 线上站点地址：**http://robotic.uwis.cn**
 
@@ -99,8 +100,7 @@ python3 deploy_to_coolify.py
 ├── Dockerfile             # 多阶段构建（MkDocs → nginx）
 ├── docker-compose.yaml    # Coolify 部署配置
 ├── nginx.conf             # nginx 服务配置
-├── serve_local.py         # 本地预览脚本
-├── deploy_to_coolify.py   # 一键部署脚本
+├── deploy_local_or_coolify.py              # 统一管理脚本（本地预览 & 远程部署）
 ├── .env                   # 密钥文件（不提交到 git）
 └── .gitignore
 ```

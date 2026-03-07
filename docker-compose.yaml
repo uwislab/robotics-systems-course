@@ -24,10 +24,12 @@ services:
     restart: unless-stopped
     volumes:
       - exam_data:/app/data  # SQLite 数据库持久化
+      - ./docs:/app/docs:rw  # Markdown 文件（sync_exams 可自动注入 exam-meta）
     environment:
       - TEACHER_PASSWORD=${TEACHER_PASSWORD:-admin123}
       - JWT_SECRET=${JWT_SECRET:-please-change-this-secret}
       - DB_PATH=/app/data/exam.db
+      - DOCS_DIR=/app/docs
     networks:
       - coolify
 
