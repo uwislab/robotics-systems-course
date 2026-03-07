@@ -20,6 +20,7 @@ extra_css:
 
 extra_javascript:
   - assets/javascripts/exam-login.js
+  - assets/javascripts/footer-links.js
 
 plugins:
   - search:
