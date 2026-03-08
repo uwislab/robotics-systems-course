@@ -21,9 +21,9 @@ flowchart TD
   Summing --> C[控制器 C(s)]
   C --> U[控制量 U(s)]
   U --> Plant[G(s)]
-  G --> Y[被控对象 Y(s)]
+  Plant --> Y[被控对象 Y(s)]
   Y -->|反馈| Summing
-  Dist[干扰 D(s)] -->|加到被控对象| G
+  Dist[干扰 D(s)] -->|加到被控对象| Plant
 ```
 
 关键概念：误差、控制器、被控对象（对象模型常以传递函数 G(s) 表达）、闭环传递函数 H_cl(s) = C(s)G(s) / (1 + C(s)G(s))。性能指标包括响应时间、稳态误差、过冲、相位裕度与增益裕度等。
@@ -43,8 +43,8 @@ C(s) = K_p + K_i / s + K_d * s
 ```mermaid
 flowchart LR
   E[误差 e(t)] -->|比例| P[Kp*e(t)]
-  E -->|积分| I[K_i * ∫ e(t) dt]
-  E -->|微分| D[K_d * de(t)/dt]
+  E -->|积分| I[Ki * integral e(t) dt]
+  E -->|微分| D[Kd * d/dt e(t)]
   P --> SUM[总和]
   I --> SUM
   D --> SUM
