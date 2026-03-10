@@ -366,7 +366,7 @@ def _verify_exams_deployed():
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     teacher_pwd = os.environ.get("TEACHER_PASSWORD", "admin123")
-    base_url = f"https://{DOMAIN}/api/teacher"
+    base_url = f"{DOMAIN}/api/teacher"
     print("\n🔍 验证远端考试数据...")
 
     try:
