@@ -41,6 +41,9 @@ plugins:
   - mkdocs_quiz
 
 markdown_extensions:
+  - toc:
+      permalink: true
+      toc_depth: 4
   - pymdownx.superfences
   - plantuml_markdown:
       server: https://www.plantuml.com/plantuml
