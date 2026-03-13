@@ -745,6 +745,40 @@ void StartProcessTask(void *argument)
 
 ---
 
+### 6.4 使用 Coolify 配置容器运行 PicSimLab 仿真
+
+PicSimLab 是一种用于嵌入式/传感器仿真的轻量化仿真环境。可通过 Coolify 将 PicSimLab 以容器形式部署，便于在云或本地服务器上提供仿真服务给学生和实验环境。
+
+示例 docker-compose.yml（作为 Coolify 的仓库部署或本地测试）：
+
+```yaml
+version: "3.8"
+services:
+  picsimlab:
+    image: picsimlab/picsimlab:latest    # 若无官方镜像，改为自己构建的镜像名
+    restart: unless-stopped
+    ports:
+      - "8080:8080"                     # Web UI 或 API 端口
+    volumes:
+      - ./picsimlab-work:/home/picsimlab/work  # 持久化仿真工程与数据
+    environment:
+      - TZ=Asia/Shanghai
+```
+
+在 Coolify 中部署步骤（简要）：
+
+1. 打开 Coolify 控制台，点击 Create → Application。
+2. 选择 "Container"（容器）或使用 "Repository" 并指向包含 docker-compose.yml 的仓库（推荐）。
+3. 如果选 Container：填写 Image（例如 picsimlab/picsimlab:latest），设置端口映射 8080，配置环境变量与卷挂载（将宿主路径映射到容器的 /home/picsimlab/work）。
+4. 如果选 Repository：指定分支与 Docker Compose 文件路径，Coolify 会根据 docker-compose.yml 构建并部署服务。
+5. 部署完成后，通过 Coolify 提供的域名或映射端口访问 PicSimLab Web 界面（例如 http://<coolify-host>:8080 或应用子域）。
+
+注意：
+- 若没有官方镜像，请在仓库中包含 Dockerfile 或 docker-compose.yml，由 Coolify 从源码构建镜像。
+- 保证宿主机有必要的端口、磁盘和 CPU 权限来运行仿真。
+
+---
+
 ## 7  本章在线测试（10 题）
 
 <div id="exam-meta" data-exam-id="chapter2" data-exam-title="第二章 CubeMX编程测验" style="display:none"></div>
