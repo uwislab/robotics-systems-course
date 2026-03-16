@@ -1,7 +1,7 @@
 ---
 number headings: first-level 2, start-at 2
 ---
-## 2 第2章 STM32CubeMX 编程指南
+## 第2章 STM32CubeMX 编程指南
 ### 2.1 本章知识导图
 
 ```plantuml
@@ -9,7 +9,7 @@ number headings: first-level 2, start-at 2
 * 第2章\nCubeMX编程指南
 
 ** 安装与界面
-*** 独立版 / CubeIDE 集成版
+*** 独立版 / CubeIDE 集成版 
 *** 主界面五大区域
 **** 芯片引脚视图（Pin View）
 **** 外设配置面板
