@@ -49,6 +49,7 @@ extra_javascript:
   - assets/javascripts/footer-links.js
   - assets/javascripts/lib/mermaid.min.js
   - assets/javascripts/mermaid-init.js
+  - assets/javascripts/utterances.js
 
 plugins:
   - search:

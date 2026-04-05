@@ -107,6 +107,19 @@ The production site is served at **http://robotic.uwis.cn**.
 
 ---
 
+## Comment System
+
+Each page of the course website includes a comment section powered by [Utterances](https://utteranc.es/), a lightweight comment widget built on GitHub Issues.
+
+- **How it works:** Comments are stored as GitHub Issues in the `uwislab/robotics-systems-course` repository, with each page mapped to an issue via its URL pathname.
+- **Requirements:** Users need a GitHub account to post comments.
+- **Theme:** Uses the `github-light` theme for a clean reading experience.
+- **SPA support:** Comments reload automatically when navigating between pages (Material for MkDocs instant navigation).
+
+To enable comments on a new deployment, install the [utterances GitHub App](https://github.com/apps/utterances) on the repository.
+
+---
+
 ## Contribution and Feedback
 
 We welcome contributions from the community to improve the course content and platform features. Please refer to the contribution guidelines on the website. For feedback or support, contact the course coordinator.

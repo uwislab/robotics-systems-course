@@ -106,6 +106,19 @@ python3 deploy_local_or_coolify.py
 
 ---
 
+## 评论系统
+
+课程网站每个页面底部集成了基于 [Utterances](https://utteranc.es/) 的评论功能，评论以 GitHub Issue 形式存储在 `uwislab/robotics-systems-course` 仓库中。
+
+- **工作原理：** 每个页面通过 URL 路径名（pathname）映射到一个 GitHub Issue，用户评论直接写入对应 Issue。
+- **使用要求：** 需要 GitHub 账号才能发表评论。
+- **主题样式：** 使用 `github-light` 主题，与课程网站风格一致。
+- **SPA 支持：** 支持 Material for MkDocs 即时导航模式，页面切换时评论区自动重新加载。
+
+如需在新部署中启用评论，需在仓库安装 [utterances GitHub App](https://github.com/apps/utterances)。
+
+---
+
 ## 贡献与反馈
 
 我们欢迎社区贡献以改进课程内容和平台功能。请参阅网站上的贡献指南。如需反馈或支持，请联系课程负责人。
