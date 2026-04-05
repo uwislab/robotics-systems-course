@@ -964,19 +964,313 @@ def generate_launch_description():
     ])
 ```
 
+#### 11.8.5 ros2_control：标准化硬件抽象与控制框架
+
+`ros2_control` 是 ROS2 的标准硬件抽象和控制器管理框架，为从 STM32 底层到上层控制算法之间提供**统一接口**。它是打通嵌入式驱动与高层控制（PID、MPC、Nav2）的关键桥梁。
+
+**为什么需要 ros2_control**：
+
+在没有 ros2_control 时，每个机器人项目都需要自己编写控制循环、硬件通信和话题接口——代码难以复用。ros2_control 将这些抽象为标准化框架：
+
+```bob
+┌─────────────────────────────────────────────────────────────┐
+│              ros2_control 架构                               │
+│                                                             │
+│  ┌──── 用户空间（可切换） ───────────────────────────────┐  │
+│  │                                                       │  │
+│  │  ┌───────────────┐  ┌───────────────┐  ┌───────────┐ │  │
+│  │  │ DiffDrive     │  │ JointTrajectory│  │ Cartesian │ │  │
+│  │  │ Controller    │  │ Controller    │  │ Controller│ │  │
+│  │  └───────┬───────┘  └───────┬───────┘  └─────┬─────┘ │  │
+│  └──────────┼──────────────────┼────────────────┼────────┘  │
+│             │ command/state    │                │            │
+│  ┌──────────▼──────────────────▼────────────────▼────────┐  │
+│  │              Controller Manager                       │  │
+│  │       (加载/卸载/切换控制器，管理控制循环)             │  │
+│  └──────────────────────┬────────────────────────────────┘  │
+│                         │ Hardware Interface                │
+│  ┌──────────────────────▼────────────────────────────────┐  │
+│  │            Hardware Components                        │  │
+│  │  ┌────────────────┐  ┌──────────────┐  ┌───────────┐ │  │
+│  │  │ SystemInterface│  │ SensorIntf   │  │ ActuatorI │ │  │
+│  │  │ (差速底盘)     │  │ (IMU/编码器) │  │ (单电机)  │ │  │
+│  │  └────────────────┘  └──────────────┘  └───────────┘ │  │
+│  └──────────────────────┬────────────────────────────────┘  │
+│                         │ Serial/CAN/SPI/micro-ROS          │
+│  ┌──────────────────────▼────────────────────────────────┐  │
+│  │                  物理硬件                              │  │
+│  │  STM32 + 电机驱动 + 编码器 + IMU                      │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**核心概念**：
+
+| 组件 | 职责 | 类比 |
+|------|------|------|
+| **Controller Manager** | 加载/管理控制器，驱动控制循环 | 操作系统的进程调度器 |
+| **Controller** | 实现具体控制算法（差速/关节轨迹/力矩） | 应用层程序 |
+| **Hardware Interface** | 抽象底层硬件的 read/write 接口 | 设备驱动 |
+| **State Interface** | 硬件公开的只读数据（位置/速度/力） | 传感器输入 |
+| **Command Interface** | 硬件接收的控制指令（速度/位置/力矩） | 执行器输出 |
+
+**URDF 中声明 ros2_control 硬件接口**：
+
+```xml
+<!-- robot.urdf.xacro 中的 ros2_control 标签 -->
+<ros2_control name="DiffDriveSystem" type="system">
+  <hardware>
+    <!-- 指定硬件接口插件 -->
+    <plugin>my_robot_hardware/DiffDriveHardware</plugin>
+    <param name="serial_port">/dev/ttyUSB0</param>
+    <param name="baud_rate">115200</param>
+  </hardware>
+  
+  <!-- 左轮关节 -->
+  <joint name="left_wheel_joint">
+    <command_interface name="velocity">
+      <param name="min">-10.0</param>
+      <param name="max">10.0</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  
+  <!-- 右轮关节 -->
+  <joint name="right_wheel_joint">
+    <command_interface name="velocity">
+      <param name="min">-10.0</param>
+      <param name="max">10.0</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+</ros2_control>
+```
+
+**实现自定义 Hardware Interface（差速底盘）**：
+
+```cpp
+// diff_drive_hardware.hpp
+#include "hardware_interface/system_interface.hpp"
+#include "hardware_interface/handle.hpp"
+#include "hardware_interface/types/hardware_interface_return_values.hpp"
+
+class DiffDriveHardware : public hardware_interface::SystemInterface {
+public:
+    // 初始化：解析 URDF 参数，打开串口
+    CallbackReturn on_init(
+        const hardware_interface::HardwareInfo & info) override
+    {
+        if (hardware_interface::SystemInterface::on_init(info) 
+            != CallbackReturn::SUCCESS) {
+            return CallbackReturn::ERROR;
+        }
+        
+        // 从 URDF 参数获取串口配置
+        serial_port_ = info_.hardware_parameters["serial_port"];
+        baud_rate_ = std::stoi(
+            info_.hardware_parameters["baud_rate"]);
+        
+        // 初始化状态和命令向量
+        hw_positions_.resize(2, 0.0);   // 左右轮位置
+        hw_velocities_.resize(2, 0.0);  // 左右轮速度
+        hw_commands_.resize(2, 0.0);    // 左右轮速度命令
+        
+        return CallbackReturn::SUCCESS;
+    }
+
+    // 导出状态接口
+    std::vector<hardware_interface::StateInterface>
+    export_state_interfaces() override {
+        std::vector<hardware_interface::StateInterface> interfaces;
+        interfaces.emplace_back("left_wheel_joint", "position",
+                                &hw_positions_[0]);
+        interfaces.emplace_back("left_wheel_joint", "velocity",
+                                &hw_velocities_[0]);
+        interfaces.emplace_back("right_wheel_joint", "position",
+                                &hw_positions_[1]);
+        interfaces.emplace_back("right_wheel_joint", "velocity",
+                                &hw_velocities_[1]);
+        return interfaces;
+    }
+
+    // 导出命令接口
+    std::vector<hardware_interface::CommandInterface>
+    export_command_interfaces() override {
+        std::vector<hardware_interface::CommandInterface> interfaces;
+        interfaces.emplace_back("left_wheel_joint", "velocity",
+                                &hw_commands_[0]);
+        interfaces.emplace_back("right_wheel_joint", "velocity",
+                                &hw_commands_[1]);
+        return interfaces;
+    }
+
+    // 读取硬件状态（每个控制周期调用）
+    return_type read(const rclcpp::Time &,
+                     const rclcpp::Duration &) override {
+        // 从串口/micro-ROS 读取编码器数据
+        // serial_.read(encoder_data);
+        // hw_positions_[0] = encoder_to_rad(left_ticks);
+        // hw_velocities_[0] = compute_velocity(left_ticks, dt);
+        return return_type::OK;
+    }
+
+    // 写入控制命令（每个控制周期调用）
+    return_type write(const rclcpp::Time &,
+                      const rclcpp::Duration &) override {
+        // 将速度命令发送到 STM32
+        // serial_.write(format_command(
+        //     hw_commands_[0], hw_commands_[1]));
+        return return_type::OK;
+    }
+
+private:
+    std::string serial_port_;
+    int baud_rate_;
+    std::vector<double> hw_positions_;
+    std::vector<double> hw_velocities_;
+    std::vector<double> hw_commands_;
+};
+
+// 注册为插件
+#include "pluginlib/class_list_macros.hpp"
+PLUGINLIB_EXPORT_CLASS(DiffDriveHardware,
+                       hardware_interface::SystemInterface)
+```
+
+**ros2_control 与 micro-ROS 的桥接方案**：
+
+```bob
+┌────────────────────────────────────────────────────────┐
+│      ros2_control ↔ micro-ROS 桥接架构                 │
+│                                                        │
+│  ┌────────────────────────────────────────────┐        │
+│  │  ROS2 上位机                               │        │
+│  │                                            │        │
+│  │  Controller Manager                        │        │
+│  │       │                                    │        │
+│  │  DiffDrive Controller                      │        │
+│  │       │                                    │        │
+│  │  Hardware Interface                        │        │
+│  │       │                                    │        │
+│  │  方案A: 串口协议          方案B: Topic桥接 │        │
+│  │  ┌──────────────┐   ┌──────────────────┐   │        │
+│  │  │ Serial R/W   │   │ Sub: /wheel_fb   │   │        │
+│  │  │ 自定义帧协议 │   │ Pub: /wheel_cmd  │   │        │
+│  │  └──────┬───────┘   └────────┬─────────┘   │        │
+│  └─────────┼────────────────────┼─────────────┘        │
+│            │ UART               │ micro-ROS Agent       │
+│  ┌─────────▼────────────────────▼─────────────┐        │
+│  │  STM32 (micro-ROS / FreeRTOS)              │        │
+│  │  编码器 → 里程计 → 发布 /wheel_fb          │        │
+│  │  订阅 /wheel_cmd → PID → PWM → 电机       │        │
+│  └────────────────────────────────────────────┘        │
+└────────────────────────────────────────────────────────┘
+```
+
+- **方案 A（串口协议）**：Hardware Interface 直接通过串口与 STM32 通信，延迟低、控制紧密，但需要自定义帧协议
+- **方案 B（Topic 桥接）**：Hardware Interface 通过 ROS2 Topic 与 micro-ROS 通信，灵活但多一层抽象
+
+**ros2_control 配置（YAML）**：
+
+```yaml
+# ros2_controllers.yaml
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz，控制循环频率
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+    wheel_separation: 0.26       # 轮距 (m)
+    wheel_radius: 0.033          # 轮半径 (m)
+    
+    # 速度限制
+    linear.x.max_velocity: 0.5
+    linear.x.min_velocity: -0.5
+    angular.z.max_velocity: 2.0
+    
+    # 里程计
+    odom_frame_id: odom
+    base_frame_id: base_link
+    publish_rate: 50.0
+    
+    # TF 发布
+    enable_odom_tf: true
+```
+
+**启动 ros2_control**：
+
+```python
+# launch/robot_control.launch.py
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch.substitutions import Command
+from launch_ros.parameter_descriptions import ParameterValue
+
+def generate_launch_description():
+    robot_description = ParameterValue(
+        Command(['xacro ', 'urdf/robot.urdf.xacro']),
+        value_type=str)
+
+    return LaunchDescription([
+        # Robot State Publisher（发布 URDF + TF）
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            parameters=[{'robot_description': robot_description}]),
+
+        # Controller Manager（加载硬件接口和控制器）
+        Node(
+            package='controller_manager',
+            executable='ros2_control_node',
+            parameters=['config/ros2_controllers.yaml',
+                        {'robot_description': robot_description}]),
+
+        # 启动控制器
+        Node(
+            package='controller_manager',
+            executable='spawner',
+            arguments=['diff_drive_controller']),
+        Node(
+            package='controller_manager',
+            executable='spawner',
+            arguments=['joint_state_broadcaster']),
+    ])
+```
+
+**ros2_control 与课程知识体系的关系**：
+
+| 课程章节 | ros2_control 中的对应 |
+|---------|----------------------|
+| 第6章 电机驱动 | Hardware Interface 的 `write()` 实现 |
+| 第8章 PID 控制 | Controller 插件（如 pid_controller） |
+| 第9章 传感器融合 | Hardware Interface 的 `read()` + State Interface |
+| 第11章 micro-ROS | Hardware Interface 的底层通信层 |
+| 第14章 Nav2 | DiffDriveController 接收 cmd_vel |
+
 ---
 
 ### 11.9 本章小结与拓展资源
 
 #### 11.9.1 关键知识点回顾
 
-本章从 ROS2 基础概念出发，逐步深入到 micro-ROS 嵌入式集成，建立了从 MCU 到完整机器人系统的技术路径：
+本章从 ROS2 基础概念出发，逐步深入到 micro-ROS 嵌入式集成和 ros2_control 硬件抽象框架，建立了从 MCU 到完整机器人系统的技术路径：
 
 1. **ROS2 核心概念**：节点、话题、服务、动作构成分布式计算图，DDS 提供工业级通信；
 2. **ROS2 编程**：Python 和 C++ 双语言 Publisher/Subscriber/Service 编程范式；
 3. **机器人控制**：cmd_vel 运动控制、TF2 坐标变换、Nav2 导航栈；
 4. **micro-ROS**：通过 XRCE-DDS 和 Agent，使 STM32 等 MCU 成为 ROS2 网络的一等公民；
-5. **系统集成**：底盘控制（micro-ROS）+ 上位机感知决策（ROS2）的完整架构。
+5. **ros2_control**：标准化硬件抽象框架，通过 Controller Manager 和 Hardware Interface 统一管理控制器与硬件；
+6. **系统集成**：底盘控制（micro-ROS）+ 硬件抽象（ros2_control）+ 上位机感知决策（ROS2）的完整架构。
 
 #### 11.9.2 推荐学习资源
 

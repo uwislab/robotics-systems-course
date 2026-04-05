@@ -216,20 +216,240 @@ if (pid_output >= 0) {
 - 电调校准、动力匹配（电机-螺旋桨-电调-电池）是保证飞行安全的关键。
 - 电源布线、滤波与 BEC（如需）设计也影响系统可靠性。
 
-### 6.11 实验与练习建议
+### 6.11 机械臂运动学基础
+
+前面几节关注轮式/飞行器的**刚体平移**问题，本节转向机械臂——一种通过**多关节串联**实现末端执行器空间定位的机构。理解机械臂运动学是掌握工业机器人、协作机械臂和仿人手臂的必要前提。
+
+#### 运动学与动力学的关系
+
+| | 关注问题 | 输入 | 输出 |
+|---|---------|------|------|
+| **运动学**（Kinematics） | 关节角度 ↔ 末端位姿 | 关节变量 $q$ | 末端位姿 $(x, y, z, R)$ |
+| **动力学**（Dynamics） | 力/力矩 ↔ 运动 | 关节力矩 $\tau$ | 关节加速度 $\ddot{q}$ |
+
+本节聚焦运动学——给定关节角度求末端位置（正运动学），以及给定期望末端位置求关节角度（逆运动学）。
+
+#### 齐次变换矩阵
+
+描述坐标系之间的旋转和平移，使用 $4 \times 4$ 齐次变换矩阵：
+
+$$
+T = \begin{bmatrix} R_{3 \times 3} & p_{3 \times 1} \\ 0_{1 \times 3} & 1 \end{bmatrix}
+$$
+
+其中 $R$ 为旋转矩阵，$p$ 为平移向量。多个变换的复合只需矩阵连乘：
+
+$$
+T_0^n = T_0^1 \cdot T_1^2 \cdot T_2^3 \cdots T_{n-1}^n
+$$
+
+#### DH 参数法（Denavit-Hartenberg）
+
+DH 参数是描述串联机械臂各连杆几何关系的标准方法。每个关节用 4 个参数定义：
+
+| 参数 | 符号 | 含义 |
+|------|------|------|
+| 连杆长度 | $a_i$ | 沿 $x_i$ 轴，从 $z_{i-1}$ 到 $z_i$ 的距离 |
+| 连杆扭角 | $\alpha_i$ | 绕 $x_i$ 轴，从 $z_{i-1}$ 到 $z_i$ 的旋转角 |
+| 关节偏距 | $d_i$ | 沿 $z_{i-1}$ 轴，从 $x_{i-1}$ 到 $x_i$ 的距离 |
+| 关节角度 | $\theta_i$ | 绕 $z_{i-1}$ 轴，从 $x_{i-1}$ 到 $x_i$ 的旋转角 |
+
+对于旋转关节，$\theta_i$ 是变量；对于移动关节，$d_i$ 是变量。
+
+每个关节的变换矩阵为：
+
+$$
+T_{i-1}^{i} = \begin{bmatrix}
+\cos\theta_i & -\sin\theta_i \cos\alpha_i & \sin\theta_i \sin\alpha_i & a_i \cos\theta_i \\
+\sin\theta_i & \cos\theta_i \cos\alpha_i & -\cos\theta_i \sin\alpha_i & a_i \sin\theta_i \\
+0 & \sin\alpha_i & \cos\alpha_i & d_i \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+```bob
+┌─────────────────────────────────────────────────────┐
+│          DH 参数建模流程                             │
+│                                                     │
+│  1. 确定各关节轴 z0, z1, ..., zn                    │
+│  2. 确定各连杆坐标系原点和 x 轴                     │
+│  3. 测量四个 DH 参数                                │
+│  4. 写出每个关节的变换矩阵                          │
+│  5. 连乘得到末端位姿                                │
+│                                                     │
+│  ┌──────┐   T01   ┌──────┐   T12   ┌──────┐        │
+│  │ 基座 │ ──────> │关节1 │ ──────> │关节2 │ ──> ...│
+│  │  {0} │         │  {1} │         │  {2} │        │
+│  └──────┘         └──────┘         └──────┘        │
+│                                                     │
+│         T_0^n = T_0^1 * T_1^2 * ... * T_(n-1)^n    │
+└─────────────────────────────────────────────────────┘
+```
+
+#### 正运动学实例：平面二连杆机械臂
+
+最简单的机械臂——两个旋转关节在平面内运动（2-DOF Planar Arm）：
+
+```bob
+                  *(x, y)
+                 /
+              L2/
+               /
+    "q2" --> *
+            /
+         L1/
+          /
+"q1" -> *──────── x
+       基座
+```
+
+**DH 参数表**：
+
+| 关节 $i$ | $a_i$ | $\alpha_i$ | $d_i$ | $\theta_i$ |
+|---------|-------|-----------|-------|----------|
+| 1 | $L_1$ | 0 | 0 | $\theta_1$ |
+| 2 | $L_2$ | 0 | 0 | $\theta_2$ |
+
+**正运动学方程**（末端坐标）：
+
+$$
+x = L_1 \cos\theta_1 + L_2 \cos(\theta_1 + \theta_2)
+$$
+
+$$
+y = L_1 \sin\theta_1 + L_2 \sin(\theta_1 + \theta_2)
+$$
+
+**逆运动学**（给定目标 $(x, y)$，求 $\theta_1, \theta_2$）：
+
+利用余弦定理：
+
+$$
+\cos\theta_2 = \frac{x^2 + y^2 - L_1^2 - L_2^2}{2 L_1 L_2}
+$$
+
+$$
+\theta_2 = \arccos\left(\frac{x^2 + y^2 - L_1^2 - L_2^2}{2 L_1 L_2}\right)
+$$
+
+$$
+\theta_1 = \text{atan2}(y, x) - \text{atan2}\left(L_2 \sin\theta_2,\; L_1 + L_2 \cos\theta_2\right)
+$$
+
+注意 $\theta_2$ 有两个解（肘上/肘下构型），实际应用中根据约束选取。
+
+**Python 实现**：
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def forward_kinematics(L1, L2, theta1, theta2):
+    """正运动学：关节角度 -> 末端坐标"""
+    x = L1 * np.cos(theta1) + L2 * np.cos(theta1 + theta2)
+    y = L1 * np.sin(theta1) + L2 * np.sin(theta1 + theta2)
+    return x, y
+
+def inverse_kinematics(L1, L2, x, y, elbow_up=True):
+    """逆运动学：末端坐标 -> 关节角度"""
+    D = (x**2 + y**2 - L1**2 - L2**2) / (2 * L1 * L2)
+    if abs(D) > 1.0:
+        raise ValueError("目标点超出工作空间")
+    theta2 = np.arccos(D) if elbow_up else -np.arccos(D)
+    theta1 = np.arctan2(y, x) - np.arctan2(
+        L2 * np.sin(theta2), L1 + L2 * np.cos(theta2))
+    return theta1, theta2
+
+def plot_arm(L1, L2, theta1, theta2):
+    """绘制机械臂姿态"""
+    # 关节位置
+    x0, y0 = 0, 0
+    x1 = L1 * np.cos(theta1)
+    y1 = L1 * np.sin(theta1)
+    x2, y2 = forward_kinematics(L1, L2, theta1, theta2)
+
+    plt.figure(figsize=(6, 6))
+    plt.plot([x0, x1, x2], [y0, y1, y2], 'o-', lw=3,
+             markersize=8, label='Arm')
+    plt.plot(x2, y2, 'r*', markersize=15, label='End-effector')
+    plt.xlim(-L1-L2-0.5, L1+L2+0.5)
+    plt.ylim(-L1-L2-0.5, L1+L2+0.5)
+    plt.grid(True)
+    plt.axis('equal')
+    plt.legend()
+    plt.title(f'q1={np.degrees(theta1):.1f} deg, '
+              f'q2={np.degrees(theta2):.1f} deg')
+    plt.show()
+
+# 示例：正运动学
+L1, L2 = 1.0, 0.8
+theta1, theta2 = np.radians(45), np.radians(30)
+x, y = forward_kinematics(L1, L2, theta1, theta2)
+print(f"末端坐标: ({x:.3f}, {y:.3f})")
+
+# 示例：逆运动学
+target_x, target_y = 1.2, 0.8
+q1, q2 = inverse_kinematics(L1, L2, target_x, target_y)
+print(f"关节角度: q1={np.degrees(q1):.1f} deg, "
+      f"q2={np.degrees(q2):.1f} deg")
+plot_arm(L1, L2, q1, q2)
+```
+
+#### 雅可比矩阵简介
+
+**雅可比矩阵** $J$ 建立了关节速度与末端速度之间的线性映射：
+
+$$
+\dot{x} = J(q) \cdot \dot{q}
+$$
+
+对于平面二连杆：
+
+$$
+J = \begin{bmatrix}
+-L_1 \sin\theta_1 - L_2 \sin(\theta_1+\theta_2) & -L_2 \sin(\theta_1+\theta_2) \\
+L_1 \cos\theta_1 + L_2 \cos(\theta_1+\theta_2) & L_2 \cos(\theta_1+\theta_2)
+\end{bmatrix}
+$$
+
+雅可比矩阵的重要应用：
+
+- **速度控制**：通过 $\dot{q} = J^{-1} \dot{x}$ 将笛卡尔空间速度映射到关节空间
+- **力映射**：$\tau = J^T F$，末端力 $F$ 映射为关节力矩 $\tau$
+- **奇异性分析**：$\det(J) = 0$ 时机械臂处于奇异构型，失去某方向运动能力
+
+#### 工业机器人运动学拓展
+
+| 机器人类型 | 自由度 | 运动学特点 | 典型代表 |
+|-----------|--------|-----------|----------|
+| SCARA | 4-DOF | 平面运动 + 垂直升降，逆解简单 | Epson T6 |
+| 六轴串联 | 6-DOF | 全空间位姿，逆解复杂（最多 8 组解） | UR5、ABB IRB |
+| 并联机构 | 6-DOF | 刚度高、速度快，正解复杂 | Delta、Stewart |
+| 协作臂 | 7-DOF | 冗余自由度，可避障/优化姿态 | Franka Emika |
+
+对于 6-DOF 及以上的工业机器人，运动学求解通常使用现成的库（如 `roboticstoolbox-python`、MoveIt 2 中的 KDL/TRAC-IK 求解器），而非手动推导。
+
+### 6.12 实验与练习建议
 1. 使用单片机定时器生成 PWM，控制直流电机的转速并通过编码器实现速度闭环（PID）。
 2. 使用三相逆变器或 ESC 控制小型 BLDC，尝试观察不同 PWM 协议（PWM/OneShot/DShot）的响应差异。
 3. 设计并测试 H 桥的热耗、开关损耗与加装电流限流保护。
 4. 对比行星与三角形连接电机的相电压与性能差异（在安全范围内实验）。
 
-### 6.12 参考资料
+5. 使用 `roboticstoolbox-python` 创建一个 6-DOF 机械臂模型，验证正/逆运动学。
+6. 修改平面二连杆 Python 代码，添加轨迹动画——让末端沿圆形路径运动。
+
+### 6.13 参考资料
 - 电力电子、功率半导体与电机驱动相关书籍与资料
 - 各类电机驱动器与 ESC 的数据手册
 - STM32、Arduino 等平台 PWM 与定时器应用示例
 
 ---
 
-### 6.13 本章测验
+- Craig, J.J. *Introduction to Robotics: Mechanics and Control*（机器人运动学经典教材）
+- Lynch & Park. *Modern Robotics: Mechanics, Planning, and Control*（开源教材，配套 Python 代码）
+- Peter Corke. *Robotics, Vision and Control*（配套 `roboticstoolbox-python`）
+
+### 6.14 本章测验
 
 <div id="exam-meta" data-exam-id="chapter8" data-exam-title="第八章 机器人运动与电机驱动测验" style="display:none"></div>
 
