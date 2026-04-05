@@ -26,9 +26,10 @@ jobs:
               per_page: 100
             });
 
-            // 取最后一条评论（关闭时填写的 Add a comment）
-            const lastComment = comments.data[comments.data.length - 1]?.body || '';
-            console.log("最后评论：", lastComment);
+            // 只检查人工评论，排除 bot（如 github-actions[bot] 自己的提示）
+            const humanComments = comments.data.filter(c => c.user.type !== 'Bot');
+            const lastComment = humanComments[humanComments.length - 1]?.body || '';
+            console.log("最后人工评论：", lastComment);
 
             // 正则匹配 commit hash（独立 7-40 位十六进制，排除纯数字和常见单词）
             const commitRegex = /\b[0-9a-f]{7,40}\b/i;
