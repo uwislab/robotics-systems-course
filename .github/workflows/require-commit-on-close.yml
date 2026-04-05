@@ -4,6 +4,9 @@ on:
   issues:
     types: [closed]
 
+permissions:
+  issues: write
+
 jobs:
   check_commit_hash:
     runs-on: ubuntu-latest
