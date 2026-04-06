@@ -1,3 +1,9 @@
+---
+name: figure-table-description
+description: "图表描述补充（为缺少描述的图/表生成或提示合适的中文描述）。"
+argument-hint: "可选：指定章节或启用自动占位标记"
+---
+
 # Skill: 图表描述补充（figure-table-description）
 
 ## 适用场景

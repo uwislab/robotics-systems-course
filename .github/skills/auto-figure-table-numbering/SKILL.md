@@ -1,3 +1,9 @@
+---
+name: auto-figure-table-numbering
+description: "图表自动编号（为 Markdown 文档中的图与表生成统一编号并同步交叉引用）。"
+argument-hint: "可选：--toc/--dry-run/--refs-only"
+---
+
 # Skill: 图表自动编号（auto-figure-table-numbering）
 
 ## 适用场景
