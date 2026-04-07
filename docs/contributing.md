@@ -184,7 +184,28 @@ number headings: first-level 2, start-at N
 
 > ⚠️ **警告**：MkDocs 构建仅识别 ` ```bob ` 标记。若提交时使用 ` ```svgbob ` 或 ` ```svgbob {kroki=true} `，该图表将在发布站点上显示为普通代码块而非渲染图形。请在提交前务必还原标记。
 
-### 4.2 PlantUML
+### 4.2 Kroki 图表
+
+除 svgbob 和 PlantUML 外，本项目还通过 `mkdocs-kroki-plugin` 支持 [Kroki](https://kroki.io/) 平台的多种图表类型。使用 `kroki-` 前缀 + 图表类型作为代码块标记：
+
+````markdown
+```kroki-plantuml
+@startuml
+Alice -> Bob: Hello
+Bob --> Alice: Hi!
+@enduml
+```
+
+```kroki-d2
+x -> y: hello
+```
+````
+
+[Kroki](https://kroki.io/#support) 支持的全部图表类型均可使用，包括：PlantUML、Mermaid、BlockDiag、GraphViz/DOT、D2、BPMN、Excalidraw、Ditaa、ERD、Nomnoml、Pikchr、Structurizr、WaveDrom、WireViz 等。
+
+> **注意**：项目中 Mermaid 图表默认由现有 JS 渲染器处理（` ```mermaid `），仅在需要 Kroki 渲染时才使用 ` ```kroki-mermaid `。
+
+### 4.3 PlantUML
 
 当框图逻辑较复杂（如时序图、思维导图、类图）时，svgbob 的纯文本方式可能难以维护。此时推荐使用 PlantUML，它通过声明式语法描述结构关系，由远程服务器渲染为 SVG：
 
@@ -198,7 +219,7 @@ number headings: first-level 2, start-at N
 ```
 ````
 
-### 4.3 Markdown 表格
+### 4.4 Markdown 表格
 
 表格是本教材的**核心信息承载方式**——对比表、参数表、选型表贯穿全书各章。编写表格时须注意以下几点：
 
@@ -206,7 +227,7 @@ number headings: first-level 2, start-at N
 - 列宽适中，避免单行过长
 - 对比表、参数表、选型表是本教材的**核心表达方式**，鼓励多用
 
-### 4.4 图表编号与交叉引用
+### 4.5 图表编号与交叉引用
 
 全书图表由 `scripts/auto_number_figures_tables.py` 自动编号，编号格式为 `图 X-Y` / `表 X-Y`（X = 章号，Y = 序号）。
 

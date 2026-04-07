@@ -146,6 +146,42 @@ python3 deploy_local_or_coolify.py
 
 > **注意：** MkDocs 构建仅识别 ` ```bob ` 标记。若提交时使用 ` ```svgbob ` 或 ` ```svgbob {kroki=true} `，图表将显示为普通代码块而非渲染图形。
 
+## 图表渲染（Kroki）
+
+除 svgbob 外，本项目还通过 `mkdocs-kroki-plugin` 支持 [Kroki](https://kroki.io/) 渲染多种图表类型（PlantUML、Mermaid、BlockDiag、D2、Graphviz 等）。
+
+### 使用方法
+
+使用 `kroki-` 前缀 + 图表类型作为代码块标记：
+
+````markdown
+```kroki-plantuml
+@startuml
+Alice -> Bob: Hello
+Bob --> Alice: Hi!
+@enduml
+```
+
+```kroki-mermaid
+graph LR
+    A[开始] --> B[结束]
+```
+
+```kroki-d2
+x -> y: hello
+```
+````
+
+### 支持的图表类型
+
+[Kroki](https://kroki.io/#support) 支持的所有图表类型均可使用，包括：PlantUML、Mermaid、BlockDiag、GraphViz/DOT、D2、BPMN、Excalidraw、Ditaa、ERD、Nomnoml、Pikchr、Structurizr、WaveDrom、WireViz 等。
+
+### 配置说明
+
+插件在 `mkdocs.yml` 中的配置：
+- `fence_prefix: kroki-` —— 图表使用 ` ```kroki-<类型> ` 语法
+- `enable_mermaid: false` —— Mermaid 由现有 JS 渲染器处理；仅当需要 Kroki 渲染时才用 `kroki-mermaid`
+
 ---
 
 ## 贡献与反馈

@@ -147,6 +147,42 @@ After finishing your diagram edits, **revert** the tag back to ` ```bob ` before
 
 > **Note:** The MkDocs build only recognizes ` ```bob `. Committing ` ```svgbob ` or ` ```svgbob {kroki=true} ` will result in the diagram being rendered as a plain code block on the published site.
 
+## Diagram Rendering (Kroki)
+
+In addition to svgbob, this project supports [Kroki](https://kroki.io/) for rendering a wide variety of diagram types (PlantUML, Mermaid, BlockDiag, D2, Graphviz, etc.) via the `mkdocs-kroki-plugin`.
+
+### Usage
+
+Use fenced code blocks with the `kroki-` prefix followed by the diagram type:
+
+````markdown
+```kroki-plantuml
+@startuml
+Alice -> Bob: Hello
+Bob --> Alice: Hi!
+@enduml
+```
+
+```kroki-mermaid
+graph LR
+    A[Start] --> B[End]
+```
+
+```kroki-d2
+x -> y: hello
+```
+````
+
+### Supported Diagram Types
+
+All diagram types supported by [Kroki](https://kroki.io/#support) can be used, including: PlantUML, Mermaid, BlockDiag, GraphViz/DOT, D2, BPMN, Excalidraw, Ditaa, ERD, Nomnoml, Pikchr, Structurizr, WaveDrom, WireViz, and more.
+
+### Configuration
+
+The plugin is configured in `mkdocs.yml` with:
+- `fence_prefix: kroki-` — diagrams use ` ```kroki-<type> ` syntax
+- `enable_mermaid: false` — Mermaid is handled by the existing JS-based renderer; use `kroki-mermaid` only when you explicitly want Kroki rendering
+
 ---
 
 ## Contribution and Feedback
