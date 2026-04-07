@@ -161,6 +161,29 @@ number headings: first-level 2, start-at N
 - CJK 字符占 2 列宽度，竖线对齐时须注意列宽计算
 - 框图最小宽度 80 字符（`mkdocs.yml` 中 `min_char_width: 80`）
 
+#### 在 VS Code 中实时预览 svgbob
+
+编辑 svgbob 框图时，若需在 VS Code 中实时预览渲染效果，可安装以下任一插件：
+
+- **Markdown Preview Enhanced**（ID: `shd101wyy.markdown-preview-enhanced`）
+- **Markdown Live Preview**（支持 Kroki 渲染）
+
+安装后，**临时**将代码块标记修改为 Kroki 格式以启用实时预览：
+
+````diff
+- ```bob
++ ```svgbob {kroki=true}
+````
+
+调试完成后，**务必改回** ` ```bob ` 再提交：
+
+````diff
+- ```svgbob {kroki=true}
++ ```bob
+````
+
+> ⚠️ **警告**：MkDocs 构建仅识别 ` ```bob ` 标记。若提交时使用 ` ```svgbob ` 或 ` ```svgbob {kroki=true} `，该图表将在发布站点上显示为普通代码块而非渲染图形。请在提交前务必还原标记。
+
 ### 4.2 PlantUML
 
 当框图逻辑较复杂（如时序图、思维导图、类图）时，svgbob 的纯文本方式可能难以维护。此时推荐使用 PlantUML，它通过声明式语法描述结构关系，由远程服务器渲染为 SVG：

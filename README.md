@@ -120,6 +120,35 @@ To enable comments on a new deployment, install the [utterances GitHub App](http
 
 ---
 
+## Diagram Rendering (svgbob)
+
+This project uses **` ```bob `** fenced code blocks to render ASCII diagrams via the `markdown-svgbob` extension. When the site is built with MkDocs, these blocks are automatically converted to inline SVG.
+
+### Preview in VS Code
+
+To preview svgbob diagrams in real-time while editing in VS Code, install one of the following extensions:
+
+- **Markdown Preview Enhanced** (ID: `shd101wyy.markdown-preview-enhanced`)
+- **Markdown Live Preview** with Kroki support
+
+Then **temporarily** change the fence tag to enable Kroki-based rendering:
+
+```diff
+- ```bob
++ ```svgbob {kroki=true}
+```
+
+After finishing your diagram edits, **revert** the tag back to ` ```bob ` before committing:
+
+```diff
+- ```svgbob {kroki=true}
++ ```bob
+```
+
+> **Note:** The MkDocs build only recognizes ` ```bob `. Committing ` ```svgbob ` or ` ```svgbob {kroki=true} ` will result in the diagram being rendered as a plain code block on the published site.
+
+---
+
 ## Contribution and Feedback
 
 We welcome contributions from the community to improve the course content and platform features. Please refer to the contribution guidelines on the website. For feedback or support, contact the course coordinator.

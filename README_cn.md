@@ -119,6 +119,35 @@ python3 deploy_local_or_coolify.py
 
 ---
 
+## 图表渲染（svgbob）
+
+本项目使用 **` ```bob `** 围栏代码块标记 svgbob 图表，MkDocs 构建时由 `markdown-svgbob` 扩展自动渲染为内联 SVG。
+
+### 在 VS Code 中实时预览
+
+编辑 svgbob 图表时，若需在 VS Code 中实时预览渲染效果，可安装以下任一插件：
+
+- **Markdown Preview Enhanced**（ID: `shd101wyy.markdown-preview-enhanced`）
+- **Markdown Live Preview**（支持 Kroki 渲染）
+
+安装后，**临时**将代码块标记修改为 Kroki 格式以启用实时预览：
+
+```diff
+- ```bob
++ ```svgbob {kroki=true}
+```
+
+调试完成后，**务必改回** ` ```bob ` 再提交：
+
+```diff
+- ```svgbob {kroki=true}
++ ```bob
+```
+
+> **注意：** MkDocs 构建仅识别 ` ```bob ` 标记。若提交时使用 ` ```svgbob ` 或 ` ```svgbob {kroki=true} `，图表将显示为普通代码块而非渲染图形。
+
+---
+
 ## 贡献与反馈
 
 我们欢迎社区贡献以改进课程内容和平台功能。请参阅网站上的贡献指南。如需反馈或支持，请联系课程负责人。
