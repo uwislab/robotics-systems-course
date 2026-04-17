@@ -45,11 +45,11 @@ if _env_file.exists():
 
 COOLIFY_BASE = "https://coolify.uwis.cn/api/v1"
 COOLIFY_API_KEY = os.environ.get("COOLIFY_API_KEY", "")
-PROJECT_NAME = "Robotics_Systems_Course"
-APP_NAME     = "robotics_systems_course"
-GIT_REPO     = "https://github.com/uwislab/robotics-systems-course.git"
+PROJECT_NAME = "Embedded_Systems_Course"
+APP_NAME     = "embedded_systems_course"
+GIT_REPO     = "https://github.com/uwislab/embedded-systems-grad-course.git"
 GIT_BRANCH   = "main"
-DOMAIN       = "https://robotic.uwis.cn"
+DOMAIN       = "https://embedded.uwis.cn"
 ENVIRONMENT  = "production"
 COMPOSE_SERVICE = "web"
 API_ENV_VARS    = ["TEACHER_PASSWORD", "JWT_SECRET"]
@@ -67,7 +67,7 @@ CONTAINER_FIXED_ENV = {
 def show_menu() -> str:
     print()
     print("╔" + "═" * 53 + "╗")
-    print("║    🤖  研究生《机器人系统》课程新教材 — 管理工具    ║")
+    print("║    💻  研究生《嵌入式系统》课程新教材 — 管理工具    ║")
     print("╠" + "═" * 53 + "╣")
     print("║  [1]  本地预览   MkDocs + API（热重载）             ║")
     print("║  [2]  远程部署   触发 Coolify 重建                  ║")
@@ -524,7 +524,7 @@ def deploy_coolify(sync_summary: dict):
         print(f"✅ 已有项目: {PROJECT_NAME}  uuid={project_uuid}")
     else:
         resp = _coolify_api("POST", "/projects",
-                            json={"name": PROJECT_NAME, "description": "机器人系统课程"})
+                            json={"name": PROJECT_NAME, "description": "嵌入式系统课程"})
         resp.raise_for_status()
         project_uuid = resp.json()["uuid"]
         print(f"✅ 已创建项目: {PROJECT_NAME}  uuid={project_uuid}")

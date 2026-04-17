@@ -2,11 +2,10 @@
 
 | 编号 | 说明 | 位置 |
 |------|------|------|
-| 图 1-1 | 从上述流程图可以看出本章知识导图的关键步骤与判断逻辑，这对正确实现相关功能至关重要。 | [chapter1.md](chapter1.md) |
-| 图 1-2 | 上图直观呈现了嵌入式系统的体系结构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter1.md](chapter1.md) |
-| 图 1-3 | 上图以框图形式描绘了最小系统结构图的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter1.md](chapter1.md) |
-| 图 1-4 | 该框图展示了输出信息涉及的知识（Output）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter1.md](chapter1.md) |
-| 图 1-5 | 上图直观呈现了本章在线测试（10 题）的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter1.md](chapter1.md) |
+| 图 1-1 | 本章知识导图涵盖嵌入式系统的核心概念、体系结构、最小系统设计与开发工具链。 | [chapter1.md](chapter1.md) |
+| 图 1-2 | 嵌入式系统四层体系结构，由硬件层到应用层逐层抽象。 | [chapter1.md](chapter1.md) |
+| 图 1-3 | STM32 最小系统结构图，清晰呈现电源、时钟、复位、启动配置与调试接口的连接关系。 | [chapter1.md](chapter1.md) |
+| 图 1-4 | 嵌入式系统"输入-加工-输出"模型，展示了信息在系统中的流转路径与各层职责。 | [chapter1.md](chapter1.md) |
 | 图 2-1 | 从上述流程图可以看出本章知识导图的关键步骤与判断逻辑，这对正确实现相关功能至关重要。 | [chapter2.md](chapter2.md) |
 | 图 2-2 | 上图直观呈现了为什么需要分层的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter2.md](chapter2.md) |
 | 图 2-3 | 上图以时序/流程的方式展示了有限状态机原理的执行过程，各参与者之间的消息传递顺序一目了然。 | [chapter2.md](chapter2.md) |
@@ -67,7 +66,7 @@
 | 图 3-47 | 该框图展示了 CAN 2.0 协议基础的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter3.md](chapter3.md) |
 | 图 3-48 | 上图直观呈现了 CAN 2.0 协议基础的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter3.md](chapter3.md) |
 | 图 3-49 | 上图以框图形式描绘了 STM32 bxCAN 外设架构的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter3.md](chapter3.md) |
-| 图 3-50 | 该框图展示了 CAN 总线在机器人系统中的应用的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter3.md](chapter3.md) |
+| 图 3-50 | 该框图展示了 CAN 总线在嵌入式系统中的应用的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter3.md](chapter3.md) |
 | 图 4-1 | 上图直观呈现了 FreeRTOS 内核架构与主要对象的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter4.md](chapter4.md) |
 | 图 4-2 | 上图以框图形式描绘了调度模型的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter4.md](chapter4.md) |
 | 图 4-3 | 该框图展示了调度模型的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter4.md](chapter4.md) |
@@ -81,123 +80,30 @@
 | 图 5-3 | 上图以框图形式描绘了编码器接口（Encoder Interface）的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter5.md](chapter5.md) |
 | 图 5-4 | 该框图展示了实验 2：输出比较与呼吸灯（PWM 占空比渐变）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter5.md](chapter5.md) |
 | 图 5-5 | 上图直观呈现了实验 5：定时器主/从（从模式控制器）——同步触发与级联的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter5.md](chapter5.md) |
-| 图 6-1 | 上图以框图形式描绘了主要运动方式的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter6.md](chapter6.md) |
-| 图 6-2 | 该框图展示了差速驱动模型（Differential Drive）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter6.md](chapter6.md) |
-| 图 6-3 | 上图直观呈现了电机分类与驱动方式的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter6.md](chapter6.md) |
-| 图 6-4 | 上图以框图形式描绘了 DH 参数法（Denavit-Hartenberg）的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter6.md](chapter6.md) |
-| 图 6-5 | 该框图展示了正运动学实例：平面二连杆机械臂的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter6.md](chapter6.md) |
-| 图 7-1 |  | [chapter7.md](chapter7.md) |
-| 图 7-2 | 上图直观呈现了 GDB 远程调试与 CubeIDE 集成的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter7.md](chapter7.md) |
-| 图 7-3 | 上图以框图形式描绘了 UART Monitor 插件与 VSCode 串口调试的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter7.md](chapter7.md) |
-| 图 7-4 | 该框图展示了然后在 VSCode Serial Monitor 中打开 /tmp/vserial0 的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter7.md](chapter7.md) |
-| 图 7-5 | 上图直观呈现了 Renode 概述与体系的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter7.md](chapter7.md) |
-| 图 7-6 | 上图以框图形式描绘了高级仿真概念与时序建模的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter7.md](chapter7.md) |
-| 图 7-7 | 该框图展示了仿真外设注入与故障注入策略的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter7.md](chapter7.md) |
-| 图 7-8 | 上图直观呈现了工程实例：基于 Renode 的工业物联网（IIoT）采集网关仿真的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter7.md](chapter7.md) |
-| 图 7-9 | 上图以框图形式描绘了工程实例：基于 Renode 的工业物联网（IIoT）采集网关仿真的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter7.md](chapter7.md) |
-| 图 8-1 | 该框图展示了闭环反馈控制基础的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter8.md](chapter8.md) |
-| 图 8-2 | 上图刻画了闭环控制的工作原理涉及的主要交互流程，便于理解各环节的时序依赖与因果关系。 | [chapter8.md](chapter8.md) |
-| 图 8-3 | 上图以框图形式描绘了 PID 控制器原理的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter8.md](chapter8.md) |
-| 图 8-4 | 该框图展示了时域性能指标的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter8.md](chapter8.md) |
-| 图 8-5 | 上图直观呈现了频域分析要点的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter8.md](chapter8.md) |
-| 图 8-6 | 上图以框图形式描绘了增量式 PID 的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter8.md](chapter8.md) |
-| 图 8-7 | 该框图展示了积分饱和问题的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter8.md](chapter8.md) |
-| 图 8-8 | 上图直观呈现了微分滤波的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter8.md](chapter8.md) |
-| 图 8-9 | 上图以框图形式描绘了 Ziegler-Nichols 临界比例法的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter8.md](chapter8.md) |
-| 图 8-10 | 该框图展示了系统架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter8.md](chapter8.md) |
-| 图 8-11 | 上图直观呈现了常见工程问题与对策的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter8.md](chapter8.md) |
-| 图 8-12 | 上图以框图形式描绘了本章小结的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter8.md](chapter8.md) |
-| 图 9-1 | 该框图展示了传感器融合概述的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter9.md](chapter9.md) |
-| 图 9-2 | 上图直观呈现了融合层级的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter9.md](chapter9.md) |
-| 图 9-3 | 上图以框图形式描绘了贝叶斯滤波框架的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter9.md](chapter9.md) |
-| 图 9-4 |  | [chapter9.md](chapter9.md) |
-| 图 9-5 | 该框图展示了差速机器人 EKF 定位的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter9.md](chapter9.md) |
-| 图 9-6 | 上图直观呈现了互补滤波原理的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter9.md](chapter9.md) |
-| 图 9-7 | 上图以框图形式描绘了 UKF 算法流程的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter9.md](chapter9.md) |
-| 图 9-8 | 该框图展示了粒子滤波算法的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter9.md](chapter9.md) |
-| 图 9-9 | 上图直观呈现了融合 EKF 设计的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter9.md](chapter9.md) |
-| 图 9-10 | 上图以框图形式描绘了 FreeRTOS 多任务架构的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter9.md](chapter9.md) |
-| 图 9-11 | 该框图展示了小结与习题的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter9.md](chapter9.md) |
-| 图 10-1 | 高级运动控制方法总览图 | [chapter10.md](chapter10.md) |
-| 图 10-2 | 该框图展示了单环 vs 串级结构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter10.md](chapter10.md) |
-| 图 10-3 | 上图直观呈现了前馈控制原理的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter10.md](chapter10.md) |
-| 图 10-4 | 上图以框图形式描绘了梯形速度曲线的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter10.md](chapter10.md) |
-| 图 10-5 | 该框图展示了 S 曲线（七段式）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter10.md](chapter10.md) |
-| 图 10-6 | 上图直观呈现了 MPC 基本思想的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter10.md](chapter10.md) |
-| 图 10-7 | 上图以框图形式描绘了为什么需要自适应的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter10.md](chapter10.md) |
-| 图 10-8 | 该框图展示了系统配置的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter10.md](chapter10.md) |
-| 图 10-9 | 上图直观呈现了纯追踪算法（Pure Pursuit）的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter10.md](chapter10.md) |
-| 图 10-10 | 上图以框图形式描绘了 Stanley 控制器的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter10.md](chapter10.md) |
-| 图 10-11 | 该框图展示了实验二：差速机器人纯追踪的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter10.md](chapter10.md) |
-| 图 10-12 | 上图直观呈现了小结与习题的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter10.md](chapter10.md) |
-| 图 11-1 | 上图以框图形式描绘了 ROS 与本课程的关系的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter11.md](chapter11.md) |
-| 图 11-2 | 该框图展示了计算图（Computation Graph）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter11.md](chapter11.md) |
-| 图 11-3 | 上图直观呈现了 TF2 坐标变换的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter11.md](chapter11.md) |
-| 图 11-4 | 上图以框图形式描绘了导航栈（Nav2）简介的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter11.md](chapter11.md) |
-| 图 11-5 | 该框图展示了 micro-ROS 架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter11.md](chapter11.md) |
-| 图 11-6 | 上图直观呈现了系统架构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter11.md](chapter11.md) |
-| 图 11-7 | 上图以框图形式描绘了 ros2_control：标准化硬件抽象与控制框架的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter11.md](chapter11.md) |
-| 图 11-8 | 该框图展示了 ros2_control：标准化硬件抽象与控制框架的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter11.md](chapter11.md) |
-| 图 12-1 | 上图直观呈现了机器人感知概述的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter12.md](chapter12.md) |
-| 图 12-2 | 上图以框图形式描绘了针孔相机模型的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter12.md](chapter12.md) |
-| 图 12-3 | 该框图展示了特征点检测的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter12.md](chapter12.md) |
-| 图 12-4 | 上图直观呈现了双目视觉原理的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter12.md](chapter12.md) |
-| 图 12-5 | 上图以框图形式描绘了点云基础的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter12.md](chapter12.md) |
-| 图 12-6 | 该框图展示了点云配准（ICP）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter12.md](chapter12.md) |
-| 图 12-7 | 上图直观呈现了特征点法 VO 的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter12.md](chapter12.md) |
-| 图 12-8 | 上图以框图形式描绘了从几何到语义的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter12.md](chapter12.md) |
-| 图 12-9 | 该框图展示了 VIO 架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter12.md](chapter12.md) |
-| 图 12-10 | 上图直观呈现了小结与习题的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter12.md](chapter12.md) |
-| 图 13-1 | 上图以框图形式描绘了什么是 SLAM 的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter13.md](chapter13.md) |
-| 图 13-2 | 该框图展示了 SLAM 系统架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter13.md](chapter13.md) |
-| 图 13-3 | 上图直观呈现了 Gmapping（基于粒子滤波的 2D SLAM）的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter13.md](chapter13.md) |
-| 图 13-4 | 上图以框图形式描绘了 Cartographer（基于图优化的 2D/3D SLAM）的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter13.md](chapter13.md) |
-| 图 13-5 | 该框图展示了视觉 SLAM 概述的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter13.md](chapter13.md) |
-| 图 13-6 | 上图直观呈现了 ORB-SLAM 系列的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter13.md](chapter13.md) |
-| 图 13-7 | 上图以框图形式描绘了选型建议的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter13.md](chapter13.md) |
-| 图 14-1 | 该框图展示了自主导航的要素的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter14.md](chapter14.md) |
-| 图 14-2 | 上图直观呈现了 A\* 算法的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter14.md](chapter14.md) |
-| 图 14-3 |  | [chapter14.md](chapter14.md) |
-| 图 14-4 | 上图以框图形式描绘了 DWA（Dynamic Window Approach）的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter14.md](chapter14.md) |
-| 图 14-5 | 该框图展示了 Frenet 坐标系与横纵向解耦规划的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter14.md](chapter14.md) |
-| 图 14-6 | 上图直观呈现了 Frenet 坐标系与横纵向解耦规划的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter14.md](chapter14.md) |
-| 图 14-7 | 上图以框图形式描绘了代价地图层的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter14.md](chapter14.md) |
-| 图 14-8 | 该框图展示了粒子滤波定位的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter14.md](chapter14.md) |
-| 图 14-9 | 上图直观呈现了 Nav2 架构概览的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter14.md](chapter14.md) |
-| 图 14-10 | 上图以框图形式描绘了为什么用行为树的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter14.md](chapter14.md) |
-| 图 14-11 | 该框图展示了行为树执行机制（Tick 模型）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter14.md](chapter14.md) |
-| 图 14-12 | 上图直观呈现了行为树基本结构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter14.md](chapter14.md) |
-| 图 14-13 | 上图以框图形式描绘了任务规划层：从导航到使命的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter14.md](chapter14.md) |
-| 图 14-14 | 该框图展示了与 micro-ROS 底盘集成的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter14.md](chapter14.md) |
-| 图 15-1 | 上图直观呈现了系统分类的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter15.md](chapter15.md) |
-| 图 15-2 | 上图以框图形式描绘了集中式架构的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter15.md](chapter15.md) |
-| 图 15-3 | 该框图展示了分布式架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter15.md](chapter15.md) |
-| 图 15-4 | 上图直观呈现了混合式架构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter15.md](chapter15.md) |
-| 图 15-5 | 上图以框图形式描绘了 WiFi 与 MQTT 的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter15.md](chapter15.md) |
-| 图 15-6 | 该框图展示了多机器人 TF 管理的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter15.md](chapter15.md) |
-| 图 15-7 | 上图直观呈现了任务分配（Task Allocation）的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter15.md](chapter15.md) |
-| 图 15-8 | 上图以框图形式描绘了经典群体行为的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter15.md](chapter15.md) |
-| 图 15-9 | 该框图展示了系统架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter15.md](chapter15.md) |
-| 图 16-1 | 上图直观呈现了为什么机器人需要机器学习的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter16.md](chapter16.md) |
-| 图 16-2 | 上图以框图形式描绘了深度学习基础回顾的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter16.md](chapter16.md) |
-| 图 16-3 | 该框图展示了马尔可夫决策过程（MDP）的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter16.md](chapter16.md) |
-| 图 16-4 | 上图直观呈现了经典控制 vs RL 控制的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter16.md](chapter16.md) |
-| 图 16-5 | 上图以框图形式描绘了从示范中学习的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter16.md](chapter16.md) |
-| 图 16-6 | 该框图展示了大语言模型 + 机器人的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter16.md](chapter16.md) |
-| 图 16-7 | 上图直观呈现了语义 SLAM 与场景图的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter16.md](chapter16.md) |
-| 图 16-8 | 上图以框图形式描绘了机器学习在机器人各模块的应用总览的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter16.md](chapter16.md) |
-| 图 16-9 | 该框图展示了小结与习题的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter16.md](chapter16.md) |
-| 图 17-1 | 上图直观呈现了硬件架构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter17.md](chapter17.md) |
-| 图 17-2 | 上图以框图形式描绘了驱动原理的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter17.md](chapter17.md) |
-| 图 17-3 | 该框图展示了传感器布局的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter17.md](chapter17.md) |
-| 图 17-4 | 上图直观呈现了显示界面设计的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter17.md](chapter17.md) |
-| 图 18-1 | 上图以框图形式描绘了系统架构的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter18.md](chapter18.md) |
-| 图 18-2 | 该框图展示了 SLAM 建图流程的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter18.md](chapter18.md) |
-| 图 18-3 | 上图直观呈现了 Nav2 导航栈架构的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter18.md](chapter18.md) |
-| 图 18-4 | 上图以框图形式描绘了多楼层导航流程的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter18.md](chapter18.md) |
-| 图 19-1 | 该框图展示了系统架构的核心结构，读者可以从中把握各功能单元的层次划分与协作方式。 | [chapter19.md](chapter19.md) |
-| 图 19-2 | 上图直观呈现了仓库地图场景的组成要素与数据通路，有助于理解系统整体的工作机理。 | [chapter19.md](chapter19.md) |
-| 图 19-3 | 上图以框图形式描绘了基于优先级的路口互斥的系统架构，清晰呈现了各模块之间的连接关系与信号流向。 | [chapter19.md](chapter19.md) |
+| 图 6-1 | 本章知识导图：PicSimlab 仿真环境的核心概念、开发流程与高级用法。 | [chapter6.md](chapter6.md) |
+| 图 6-2 | PicSimlab 主界面布局：左侧板卡视图，右侧虚拟外设区域，底部状态栏。 | [chapter6.md](chapter6.md) |
+| 图 6-3 | CubeMX → CubeIDE → PicSimlab 三阶段仿真开发流程。 | [chapter6.md](chapter6.md) |
+| 图 6-4 | CubeIDE 通过 TCP 连接 PicSimlab GDB Server 实现源码级仿真调试。 | [chapter6.md](chapter6.md) |
+| 图 6-5 | UART 通过 TCP 桥接实现仿真串口的自动化测试。 | [chapter6.md](chapter6.md) |
+| 图 7-1 | 本章知识导图：传感器分类与四种常用传感器的接口编程。 | [chapter7.md](chapter7.md) |
+| 图 7-2 | 传感器信号从物理量到 STM32 数据处理的转换链路。 | [chapter7.md](chapter7.md) |
+| 图 7-3 | HC-SR04 与 STM32 的连接示意图。 | [chapter7.md](chapter7.md) |
+| 图 8-1 | 本章知识导图：四种常用显示设备的驱动编程。 | [chapter8.md](chapter8.md) |
+| 图 8-2 | SSD1306 显存页寻址结构，128×64 像素分为 8 页。 | [chapter8.md](chapter8.md) |
+| 图 9-1 | 本章知识导图：直流减速电机与步进电机的驱动编程。 | [chapter9.md](chapter9.md) |
+| 图 9-2 | H 桥驱动电路原理：通过四个开关管控制电流方向，实现电机正转、反转和制动。 | [chapter9.md](chapter9.md) |
+| 图 9-3 |  | [chapter9.md](chapter9.md) |
+| 图 10-1 | 本章知识导图：从控制基础到 PID 工程实现。 | [chapter10.md](chapter10.md) |
+| 图 10-2 | 闭环控制系统框图：目标值 $r(t)$、偏差 $e(t) = r(t) - y(t)$、控制量 $u(t)$、输出 $y(t)$。 | [chapter10.md](chapter10.md) |
+| 图 11-1 | 本章知识导图：从有线总线到物联网协议的完整通信体系。 | [chapter11.md](chapter11.md) |
+| 图 11-2 | MQTT 发布/订阅模型：发布者和订阅者通过 Broker 解耦通信。 | [chapter11.md](chapter11.md) |
+| 图 11-3 | 农业物联网系统架构：多个 CAN 节点采集数据，网关汇聚后通过 Wi-Fi/MQTT 上报云平台。 | [chapter11.md](chapter11.md) |
+| 图 12-1 | 本章知识导图：嵌入式系统综合设计的关键要素。 | [chapter12.md](chapter12.md) |
+| 图 12-2 | 分层固件架构：上层调用下层接口，禁止跨层或反向调用。 | [chapter12.md](chapter12.md) |
+| 图 12-3 | 智能温室控制器主程序流程。 | [chapter12.md](chapter12.md) |
+| 图 14-1 | 实验二系统接线示意图。 | [chapter14.md](chapter14.md) |
+| 图 15-1 | 项目实施时间规划（4 周）。 | [chapter15.md](chapter15.md) |
+| 图 15-2 | 智能温室系统框图。 | [chapter15.md](chapter15.md) |
 | 图 A-1 |  | [appendix_a.md](appendix_a.md) |
 | 图 A-2 | A.2.2 安装方式 | [appendix_a.md](appendix_a.md) |
 | 图 A-3 | A.2.3 主界面布局 | [appendix_a.md](appendix_a.md) |
@@ -227,10 +133,11 @@
 
 | 编号 | 说明 | 位置 |
 |------|------|------|
-| 表 1-1 | 学习机器人控制技术，能建立从**普通思维**到**计算机思维**，再到**机器人思维**的认知升级： | [chapter1.md](chapter1.md) |
-| 表 1-2 | 嵌入式系统的体系结构 | [chapter1.md](chapter1.md) |
-| 表 1-3 | 最小嵌入式系统结构 | [chapter1.md](chapter1.md) |
-| 表 1-4 | 各部分说明 | [chapter1.md](chapter1.md) |
+| 表 1-1 | 嵌入式系统与通用计算机的对比 | [chapter1.md](chapter1.md) |
+| 表 1-2 | 学习嵌入式系统能建立从抽象思维到工程实现的认知进阶： | [chapter1.md](chapter1.md) |
+| 表 1-3 | 嵌入式系统体系结构各层说明 | [chapter1.md](chapter1.md) |
+| 表 1-4 | 最小嵌入式系统结构 | [chapter1.md](chapter1.md) |
+| 表 1-5 | STM32 启动模式配置 | [chapter1.md](chapter1.md) |
 | 表 2-1 | 为什么需要分层 | [chapter2.md](chapter2.md) |
 | 表 2-2 |  | [chapter2.md](chapter2.md) |
 | 表 2-3 |  | [chapter2.md](chapter2.md) |
@@ -266,113 +173,43 @@
 | 表 5-1 | 定时器基础概念 | [chapter5.md](chapter5.md) |
 | 表 5-2 | 计数模式 | [chapter5.md](chapter5.md) |
 | 表 5-3 | 编码器接口（Encoder Interface） | [chapter5.md](chapter5.md) |
-| 表 6-1 | 主要运动方式 | [chapter6.md](chapter6.md) |
-| 表 6-2 | 其他轮式配置 | [chapter6.md](chapter6.md) |
-| 表 6-3 | 电机分类与驱动方式 | [chapter6.md](chapter6.md) |
-| 表 6-4 | 运动学与动力学的关系 | [chapter6.md](chapter6.md) |
-| 表 6-5 | DH 参数法（Denavit-Hartenberg） | [chapter6.md](chapter6.md) |
-| 表 6-6 | 正运动学实例：平面二连杆机械臂 | [chapter6.md](chapter6.md) |
-| 表 6-7 | 工业机器人运动学拓展 | [chapter6.md](chapter6.md) |
-| 表 7-1 | 嵌入式开发的学习门槛在于：**代码不能在普通计算机上直接运行**，必须依赖真实的硬件开发板。然而，硬件存在以下限制： | [chapter7.md](chapter7.md) |
-| 表 7-2 | PicSimlab 概述 | [chapter7.md](chapter7.md) |
-| 表 7-3 |  | [chapter7.md](chapter7.md) |
-| 表 7-4 | 常用虚拟外设对照表 | [chapter7.md](chapter7.md) |
-| 表 7-5 | 常见问题与调试技巧 | [chapter7.md](chapter7.md) |
-| 表 7-6 | 命令行启动与 PWZ 工程文件 | [chapter7.md](chapter7.md) |
-| 表 7-7 |  | [chapter7.md](chapter7.md) |
-| 表 7-8 |  | [chapter7.md](chapter7.md) |
-| 表 7-9 |  | [chapter7.md](chapter7.md) |
-| 表 7-10 | 仿真外设注入与故障注入策略 | [chapter7.md](chapter7.md) |
-| 表 7-11 | 与调试与 CI 集成 | [chapter7.md](chapter7.md) |
-| 表 8-1 |  | [chapter8.md](chapter8.md) |
-| 表 8-2 | 时域性能指标 | [chapter8.md](chapter8.md) |
-| 表 8-3 | 频域分析通过 Bode 图、Nyquist 图来评估闭环系统的稳定性与鲁棒性。 | [chapter8.md](chapter8.md) |
-| 表 8-4 | 增量式 PID | [chapter8.md](chapter8.md) |
-| 表 8-5 | Anti-windup 策略 | [chapter8.md](chapter8.md) |
-| 表 8-6 | Ziegler-Nichols 临界比例法 | [chapter8.md](chapter8.md) |
-| 表 8-7 | 当无法进行临界振荡实验时，采用经验法逐步整定： | [chapter8.md](chapter8.md) |
-| 表 8-8 | 硬件参数 | [chapter8.md](chapter8.md) |
-| 表 8-9 | 以下是该系统采用手动经验法整定的实际调参记录： | [chapter8.md](chapter8.md) |
-| 表 8-10 | 常见工程问题与对策 | [chapter8.md](chapter8.md) |
-| 表 9-1 | 融合的三种模式 | [chapter9.md](chapter9.md) |
-| 表 9-2 | 不同的概率假设和计算方法，产生不同的具体算法： | [chapter9.md](chapter9.md) |
-| 表 9-3 | IMU 传感器特性 | [chapter9.md](chapter9.md) |
-| 表 9-4 | 互补滤波 vs 卡尔曼滤波 | [chapter9.md](chapter9.md) |
-| 表 9-5 | EKF vs UKF 对比 | [chapter9.md](chapter9.md) |
-| 表 9-6 | 计算负载分析 | [chapter9.md](chapter9.md) |
-| 表 10-1 | 第 8 章介绍的 PID 控制器是工业中应用最广泛的控制方法，但在以下场景中存在明显局限： | [chapter10.md](chapter10.md) |
-| 表 10-2 | MPC vs PID 对比 | [chapter10.md](chapter10.md) |
-| 表 10-3 | 三种路径跟踪方法对比 | [chapter10.md](chapter10.md) |
-| 表 11-1 | ROS 的历史演进 | [chapter11.md](chapter11.md) |
-| 表 11-2 | 常用 QoS 配置： | [chapter11.md](chapter11.md) |
-| 表 11-3 | 传统 ROS2 节点运行在 Linux 等完整操作系统上，资源需求较高（RAM > 256MB）。而机器人的底层控制器（如 STM32）通常只有几十 KB RAM。micro-ROS 填补了这一鸿沟： | [chapter11.md](chapter11.md) |
-| 表 11-4 | 支持的 MCU 平台 | [chapter11.md](chapter11.md) |
-| 表 11-5 | 运行与调试 | [chapter11.md](chapter11.md) |
-| 表 11-6 | 话题通信设计 | [chapter11.md](chapter11.md) |
-| 表 11-7 |  | [chapter11.md](chapter11.md) |
-| 表 11-8 |  | [chapter11.md](chapter11.md) |
-| 表 11-9 | 推荐学习资源 | [chapter11.md](chapter11.md) |
-| 表 12-1 | 机器人常用视觉传感器 | [chapter12.md](chapter12.md) |
-| 表 12-2 | 特征点检测 | [chapter12.md](chapter12.md) |
-| 表 12-3 | 从左右图像中寻找对应点，计算每个像素的视差： | [chapter12.md](chapter12.md) |
-| 表 12-4 | 直接法 VO | [chapter12.md](chapter12.md) |
-| 表 12-5 | 语义分割为每个像素分配类别标签，比目标检测提供更精细的信息： | [chapter12.md](chapter12.md) |
-| 表 12-6 | VIO 架构 | [chapter12.md](chapter12.md) |
-| 表 12-7 | image_transport | [chapter12.md](chapter12.md) |
-| 表 12-8 | 常用视觉相关 ROS2 包 | [chapter12.md](chapter12.md) |
-| 表 13-1 | SLAM 的核心挑战 | [chapter13.md](chapter13.md) |
-| 表 13-2 | 激光雷达（LiDAR） | [chapter13.md](chapter13.md) |
-| 表 13-3 | 相机 | [chapter13.md](chapter13.md) |
-| 表 13-4 | 扫描匹配（Scan Matching） | [chapter13.md](chapter13.md) |
-| 表 13-5 | 3D 激光 SLAM：LOAM 系列 | [chapter13.md](chapter13.md) |
-| 表 13-6 | 特征提取与匹配 | [chapter13.md](chapter13.md) |
-| 表 13-7 | 视觉惯性 SLAM 融合相机和 IMU，是当前最实用的方案之一： | [chapter13.md](chapter13.md) |
-| 表 13-8 | 激光 SLAM 的回环检测方法： | [chapter13.md](chapter13.md) |
-| 表 13-9 | 地图类型对比 | [chapter13.md](chapter13.md) |
-| 表 13-10 | 主流 SLAM 算法对比 | [chapter13.md](chapter13.md) |
-| 表 13-11 | 推荐学习资源 | [chapter13.md](chapter13.md) |
-| 表 14-1 | 导航与前置章节的关系 | [chapter14.md](chapter14.md) |
-| 表 14-2 | A\* 算法 | [chapter14.md](chapter14.md) |
-| 表 14-3 | A\* 的变体 | [chapter14.md](chapter14.md) |
-| 表 14-4 | RRT\* 算法：渐近最优采样规划 | [chapter14.md](chapter14.md) |
-| 表 14-5 |  | [chapter14.md](chapter14.md) |
-| 表 14-6 | TEB（Timed Elastic Band） | [chapter14.md](chapter14.md) |
-| 表 14-7 |  | [chapter14.md](chapter14.md) |
-| 表 14-8 | 局部规划算法对比总结 | [chapter14.md](chapter14.md) |
-| 表 14-9 | 代价地图是导航系统对环境的一种量化表示，将每个栅格赋予一个 0-255 的代价值： | [chapter14.md](chapter14.md) |
-| 表 14-10 | 全局代价地图 vs 局部代价地图 | [chapter14.md](chapter14.md) |
-| 表 14-11 | 为什么用行为树 | [chapter14.md](chapter14.md) |
-| 表 14-12 | 行为树的执行遵循 **Tick（心跳）** 机制：每个 tick 周期，从根节点开始递归调用子节点的 `tick()` 方法，每个节点返回三种状态之一： | [chapter14.md](chapter14.md) |
-| 表 14-13 |  | [chapter14.md](chapter14.md) |
-| 表 14-14 | 行为树基本结构 | [chapter14.md](chapter14.md) |
-| 表 14-15 |  | [chapter14.md](chapter14.md) |
-| 表 14-16 |  | [chapter14.md](chapter14.md) |
-| 表 14-17 | 推荐学习资源 | [chapter14.md](chapter14.md) |
-| 表 15-1 | 单机器人在以下场景中能力受限： | [chapter15.md](chapter15.md) |
-| 表 15-2 | 集中式架构 | [chapter15.md](chapter15.md) |
-| 表 15-3 | 分布式架构 | [chapter15.md](chapter15.md) |
-| 表 15-4 | 通信需求分析 | [chapter15.md](chapter15.md) |
-| 表 15-5 | Mesh 网络与 LoRa | [chapter15.md](chapter15.md) |
-| 表 15-6 | 多机器人任务分配（MRTA）问题：将 $M$ 个任务分配给 $N$ 个机器人，优化总代价。 | [chapter15.md](chapter15.md) |
-| 表 15-7 | 多机器人同时建图可大幅加速环境探索，但面临额外挑战： | [chapter15.md](chapter15.md) |
-| 表 15-8 | 推荐学习资源 | [chapter15.md](chapter15.md) |
-| 表 16-1 | 传统机器人依赖人工设计的规则和模型，面对复杂多变的真实环境时存在根本性挑战： | [chapter16.md](chapter16.md) |
-| 表 16-2 | 估计连续帧之间像素级的运动，用于动态物体检测和避障： | [chapter16.md](chapter16.md) |
-| 表 16-3 | 常用 RL 算法对比 | [chapter16.md](chapter16.md) |
-| 表 16-4 | 仿真训练环境 | [chapter16.md](chapter16.md) |
-| 表 16-5 | 从示范中学习 | [chapter16.md](chapter16.md) |
-| 表 16-6 | 代表性工作 | [chapter16.md](chapter16.md) |
-| 表 16-7 | 机器学习在机器人各模块的应用总览 | [chapter16.md](chapter16.md) |
-| 表 16-8 | 机器学习与机器人的融合正在加速演进，以下是值得关注的方向： | [chapter16.md](chapter16.md) |
-| 表 17-1 | 软件架构 | [chapter17.md](chapter17.md) |
-| 表 17-2 |  | [chapter17.md](chapter17.md) |
-| 表 17-3 | 本章通过 K3 教学机器人平台，将课程前半部分的核心知识串联为一个完整的工程项目： | [chapter17.md](chapter17.md) |
-| 表 18-1 | 学习目标 | [chapter18.md](chapter18.md) |
-| 表 18-2 | SLAM 参数调优 | [chapter18.md](chapter18.md) |
-| 表 18-3 |  | [chapter18.md](chapter18.md) |
-| 表 18-4 | 本章通过智能轮椅仿真项目，实践了机器人导航的完整技术栈： | [chapter18.md](chapter18.md) |
-| 表 19-1 | 实验评分标准 | [chapter19.md](chapter19.md) |
-| 表 19-2 | 本章通过多 AGV 调度系统实验，综合运用了课程中多个章节的核心技术： | [chapter19.md](chapter19.md) |
+| 表 6-1 | 真实硬件的局限性 | [chapter6.md](chapter6.md) |
+| 表 6-2 | PicSimlab 核心特性 | [chapter6.md](chapter6.md) |
+| 表 6-3 | PicSimlab 常用虚拟外设 | [chapter6.md](chapter6.md) |
+| 表 6-4 | PicSimlab 常见问题排查 | [chapter6.md](chapter6.md) |
+| 表 6-5 | CubeIDE GDB 调试配置参数 | [chapter6.md](chapter6.md) |
+| 表 6-6 | CI 自动化测试流程 | [chapter6.md](chapter6.md) |
+| 表 7-1 | 传感器分类 | [chapter7.md](chapter7.md) |
+| 表 8-1 | 共阴极数码管段码表 | [chapter8.md](chapter8.md) |
+| 表 8-2 | SSD1306 OLED 与 STM32 的 I2C 连接 | [chapter8.md](chapter8.md) |
+| 表 8-3 | HD44780 LCD 引脚定义（4 位模式） | [chapter8.md](chapter8.md) |
+| 表 9-1 | PWM 占空比与电机行为 | [chapter9.md](chapter9.md) |
+| 表 9-2 | H 桥控制逻辑 | [chapter9.md](chapter9.md) |
+| 表 9-3 | TB6612FNG 关键参数 | [chapter9.md](chapter9.md) |
+| 表 9-4 | TB6612FNG 接线表（通道 A） | [chapter9.md](chapter9.md) |
+| 表 9-5 | 28BYJ-48 参数 | [chapter9.md](chapter9.md) |
+| 表 9-6 | 全步驱动时序 | [chapter9.md](chapter9.md) |
+| 表 9-7 | A4988 驱动器控制接口 | [chapter9.md](chapter9.md) |
+| 表 10-1 | PID 各环节效果对比 | [chapter10.md](chapter10.md) |
+| 表 10-2 | Ziegler-Nichols 参数整定表 | [chapter10.md](chapter10.md) |
+| 表 11-1 | 四种常用有线通信总线对比 | [chapter11.md](chapter11.md) |
+| 表 11-2 | 自定义通信协议帧格式 | [chapter11.md](chapter11.md) |
+| 表 11-3 | CAN 标准数据帧各字段 | [chapter11.md](chapter11.md) |
+| 表 11-4 | 常用 ESP8266 AT 指令 | [chapter11.md](chapter11.md) |
+| 表 11-5 | LoRa 与 Wi-Fi 对比 | [chapter11.md](chapter11.md) |
+| 表 11-6 | MQTT QoS 等级 | [chapter11.md](chapter11.md) |
+| 表 12-1 | 三种固件架构对比 | [chapter12.md](chapter12.md) |
+| 表 12-2 | STM32F103 低功耗模式对比 | [chapter12.md](chapter12.md) |
+| 表 12-3 |  | [chapter12.md](chapter12.md) |
+| 表 12-4 | 嵌入式系统调试手段 | [chapter12.md](chapter12.md) |
+| 表 12-5 | 系统功能需求 | [chapter12.md](chapter12.md) |
+| 表 13-1 | 实验环境配置 | [chapter13.md](chapter13.md) |
+| 表 13-2 | 实验报告内容与评分 | [chapter13.md](chapter13.md) |
+| 表 14-1 | 实验器件清单 | [chapter14.md](chapter14.md) |
+| 表 14-2 | 实验二评分标准 | [chapter14.md](chapter14.md) |
+| 表 15-1 | 推荐项目选题 | [chapter15.md](chapter15.md) |
+| 表 15-2 | 技术评价指标 | [chapter15.md](chapter15.md) |
+| 表 15-3 | 综合项目评分表 | [chapter15.md](chapter15.md) |
 | 表 A-1 | A.2.1 工具定位 | [appendix_a.md](appendix_a.md) |
 | 表 A-2 | 常见 USER CODE 区域说明： | [appendix_a.md](appendix_a.md) |
 | 表 A-3 | osDelay 与 HAL_Delay 的区别 | [appendix_a.md](appendix_a.md) |

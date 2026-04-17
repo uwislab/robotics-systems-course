@@ -1,18 +1,18 @@
-# 《机器人系统》
+# 《嵌入式系统》
 
-Welcome to the interactive course website for the "《机器人系统》" course.
+Welcome to the interactive course website for the "《嵌入式系统》" course.
 
-This project is designed to provide a comprehensive learning platform that integrates multimedia courseware, interactive experiments, and project practice materials. It aims to facilitate a deep understanding of robotics systems by combining theoretical knowledge with practical applications.
+This project is designed to provide a comprehensive learning platform that integrates multimedia courseware, interactive experiments, and project practice materials. It aims to facilitate a deep understanding of embedded systems by combining theoretical knowledge with practical applications.
 
 ---
 
 ## Project Overview
 
-The "《机器人系统》" course website offers:
+The "《嵌入式系统》" course website offers:
 
-- **Multimedia Courseware:** Rich video lectures, slides, and reading materials to cover fundamental and advanced topics in robotics. These materials are curated by experts and updated regularly to reflect the latest advancements in the field.
-- **Interactive Experiments:** Hands-on virtual labs and simulations that allow students to experiment with robotic algorithms and hardware concepts in a controlled environment. These experiments provide real-time feedback and encourage exploration and innovation.
-- **Project Practice Materials:** Detailed project guidelines, datasets, and code repositories to support real-world robotics system development and research. Students can apply their knowledge by working on practical projects that simulate industry challenges.
+- **Multimedia Courseware:** Rich video lectures, slides, and reading materials to cover fundamental and advanced topics in embedded systems. These materials are curated by experts and updated regularly to reflect the latest advancements in the field.
+- **Interactive Experiments:** Hands-on virtual labs and simulations that allow students to experiment with embedded algorithms and hardware concepts in a controlled environment. These experiments provide real-time feedback and encourage exploration and innovation.
+- **Project Practice Materials:** Detailed project guidelines, datasets, and code repositories to support real-world embedded system development and research. Students can apply their knowledge by working on practical projects that simulate industry challenges.
 
 ---
 
@@ -22,7 +22,7 @@ Our platform adopts a novel learning model that emphasizes:
 
 - **Active Learning:** Encouraging students to engage actively with the content through interactive exercises, quizzes, and experiments. This approach helps reinforce concepts and improve retention.
 - **Blended Theory and Practice:** Seamlessly integrating theoretical lessons with practical applications to reinforce understanding. Students can immediately apply what they learn in theory to hands-on activities.
-- **Collaborative Projects:** Facilitating teamwork and knowledge sharing through project-based learning. Students can collaborate on projects, share insights, and develop communication skills essential for robotics engineering.
+- **Collaborative Projects:** Facilitating teamwork and knowledge sharing through project-based learning. Students can collaborate on projects, share insights, and develop communication skills essential for embedded systems engineering.
 
 ---
 
@@ -85,7 +85,7 @@ This script will:
 2. Locate the Coolify application
 3. Trigger a forced rebuild and redeployment
 
-The production site is served at **http://robotic.uwis.cn**.
+The production site is served at **http://embedded.uwis.cn**.
 
 ### Project Structure
 
@@ -111,7 +111,7 @@ The production site is served at **http://robotic.uwis.cn**.
 
 Each page of the course website includes a comment section powered by [Utterances](https://utteranc.es/), a lightweight comment widget built on GitHub Issues.
 
-- **How it works:** Comments are stored as GitHub Issues in the `uwislab/robotics-systems-course` repository, with each page mapped to an issue via its URL pathname.
+- **How it works:** Comments are stored as GitHub Issues in the `uwislab/embedded-systems-grad-course` repository, with each page mapped to an issue via its URL pathname.
 - **Requirements:** Users need a GitHub account to post comments.
 - **Theme:** Uses the `github-light` theme for a clean reading experience.
 - **SPA support:** Comments reload automatically when navigating between pages (Material for MkDocs instant navigation).
@@ -218,4 +218,4 @@ You can switch to the Chinese version here: [README_cn.md](README_cn.md)
 
 ## Contact
 
-For any questions, suggestions, or support, please contact the course coordinator at robotics-course@example.com.
+For any questions, suggestions, or support, please contact the course coordinator at embedded-course@example.com.

@@ -4,7 +4,7 @@ number headings: first-level 2, start-at 4
 
 ## 4 第 4 章 单片机操作系统 — FreeRTOS
 
-本章核心内容：机器人系统实时操作系统（RTOS）概念、FreeRTOS 内核架构与组件、任务调度原理、进程间通信与同步、内存管理策略、中断与 ISR 安全 API、移植与配置、调试与性能分析，以及基于 FreeRTOS 的工程实例。目标读者为研究生，要求具备机器人系统基础（C 语言、MCU 架构）并能够在此基础上掌握 RTOS 的设计思想与工程实现能力。
+本章核心内容：嵌入式实时操作系统（RTOS）概念、FreeRTOS 内核架构与组件、任务调度原理、进程间通信与同步、内存管理策略、中断与 ISR 安全 API、移植与配置、调试与性能分析，以及基于 FreeRTOS 的工程实例。目标读者为研究生，要求具备嵌入式系统基础（C 语言、MCU 架构）并能够在此基础上掌握 RTOS 的设计思想与工程实现能力。
 
 学习目标：
 
@@ -485,7 +485,7 @@ int main(void) {
 
 ### 4.12 本章测验
 
-<div id="exam-meta" data-exam-id="chapter6" data-exam-title="第六章 FreeRTOS 机器人实时操作系统测验" style="display:none"></div>
+<div id="exam-meta" data-exam-id="chapter6" data-exam-title="第六章 FreeRTOS 嵌入式实时操作系统测验" style="display:none"></div>
 
 <!-- mkdocs-quiz intro -->
 

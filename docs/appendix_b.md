@@ -889,7 +889,7 @@ void Sensor_Task(void)
   <p><strong>章节测验</strong> | 满分: 100 分 | 建议用时: 45 分钟</p>
 </div>
 
-<div id="exam-meta" data-exam-id="chapter12" data-exam-title="第 12 章 机器人系统开发环境配置 测验" style="display:none"></div>
+<div id="exam-meta" data-exam-id="chapter12" data-exam-title="附录 B 嵌入式开发环境配置 测验" style="display:none"></div>
 
 <!-- mkdocs-quiz intro -->
 
