@@ -1,4 +1,4 @@
-# 《机器人系统》
+# 《机器人系统》在线课程网站
 
 Welcome to the interactive course website for the "《机器人系统》" course.
 
